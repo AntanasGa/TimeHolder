@@ -6,7 +6,11 @@ export default {
   ],
   darkMode: 'media',
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'popout': 'opacity, transform, color'
+      },
+    },
   },
   plugins: [],
 }
