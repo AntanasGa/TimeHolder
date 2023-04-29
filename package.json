@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.17",
+    "pinia": "^2.0.35",
     "vue": "^3.2.47",
     "vue-router": "4"
   },
