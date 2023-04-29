@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes loadbar {
+  0% {
+    background-position-x: 0%;
+
+  }
+
+  100% {
+    background-position-x: 100%;
+  }
+}
+
+.loadbar {
+  background: linear-gradient(90deg,
+    rgb(255, 0, 0) 0%,
+    rgb(255, 255, 0) 14%,
+    rgb(0, 192, 255) 29%,
+    rgb(192, 0, 255) 43%,
+    rgb(255, 0, 0) 58%,
+    rgb(255, 255, 0) 72%,
+    rgb(0, 192, 255) 86%,
+    rgb(192, 0, 255) 100%);
+  background-size: 200% 200%;
+  animation: loadbar 2s linear infinite;
+}
