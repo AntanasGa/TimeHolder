@@ -13,7 +13,7 @@ const items = useDBCacheStore();
 const toasts = useToastStore();
 const db = useIndexedDbStore();
 
-const denyDbAccess = ref(true);
+const denyDbAccess = ref(false);
 
 db.initialize().then(async () => {
   console.log("init then");
@@ -35,10 +35,7 @@ db.initialize().then(async () => {
     let message = e instanceof Error ? e.message : (e.error?.message || "");
     toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
   });
-
-  if (!shouldStayDenied) {
-    denyDbAccess.value = false;
-  }
+  denyDbAccess.value = shouldStayDenied;
 });
 console.log("starting DbContext init");
 
