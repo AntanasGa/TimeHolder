@@ -1,5 +1,11 @@
 <template>
-  <li class="p-3 rounded-md group bg-white/30 transition-colors hover:bg-red-500">
+  <li :class="[
+    'p-3',
+    'rounded-md',
+    'group',
+    'transition-colors',
+    ...route.fullPath.startsWith(to) ? ['bg-red-200', 'hover:bg-red-400'] : ['bg-white/30', 'hover:bg-red-500'],
+  ]">
     <RouterLink :to="to" :title="title">
       <slot className="h-12 w-12 relative translate-y-0 text-black-500 transition-popout group-hover:text-white group-hover:-translate-y-3"></slot>
       <span
@@ -24,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 const { title, to } = defineProps({
   title: String,
   to: {
@@ -32,4 +38,5 @@ const { title, to } = defineProps({
     required: true,
   },
 });
+const route = useRoute();
 </script>

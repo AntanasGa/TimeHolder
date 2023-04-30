@@ -5,9 +5,9 @@
       <div class="relative top-0 inset-x-0 h-1 mb-1">
         <div v-if="busy" class="w-full h-full loadbar"></div>
       </div>
-      <div class="container">
+      <main class="container mx-auto">
       <RouterView />
-      </div>
+      </main>
       <Navigation />
       </template>
       <div v-else class="fixed flex flex-col inset-0 bg-red-500 text-white justify-center items-center gap-2">

@@ -2,7 +2,7 @@
   <div class="fixed bottom-4 left-2/4 -translate-x-2/4">
     <nav class="rounded-md drop-shadow-md backdrop-blur-sm bg-white/30">
       <ul class="flex gap-4">
-        <NavigationLink to="/" title="Home">
+        <NavigationLink to="/tasks" title="Home">
           <template #default="{ className }">
             <RectangleStackIcon :class="className" />
           </template>

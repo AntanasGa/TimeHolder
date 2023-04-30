@@ -7,7 +7,7 @@ import { useIndexedDbStore } from '@/stores/IndexedDbStore';
 import { useToastStore, IToast, ToastStatus } from '@/stores/ToastStore';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexType, IndexedItem } from '@/stores/documents';
-import { ref } from 'vue';
+import { provide, ref } from 'vue';
 
 const items = useDBCacheStore();
 const toasts = useToastStore();
@@ -16,12 +16,10 @@ const db = useIndexedDbStore();
 const denyDbAccess = ref(false);
 
 db.initialize().then(async () => {
-  console.log("init then");
   let shouldStayDenied = false;
   await db.fetch("entity").then((res) => {
     items.entity = res;
   }).catch((e: IDBRequest | Error) => {
-    console.log("init err");
     shouldStayDenied = true;
     let message = e instanceof Error ? e.message : (e.error?.message || "");
     toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
@@ -30,14 +28,12 @@ db.initialize().then(async () => {
   await db.fetch("task").then((res) => {
     items.task = res;
   }).catch((e: IDBRequest | Error) => {
-    console.log("init err");
     shouldStayDenied = true;
     let message = e instanceof Error ? e.message : (e.error?.message || "");
     toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
   });
   denyDbAccess.value = shouldStayDenied;
 });
-console.log("starting DbContext init");
 
 const taskUnloadedError: Partial<IToast> = { title: "Task", message: "tasks are not loaded", status: ToastStatus.Error };
 const taskMissingError: Partial<IToast> = { title: "Task", message: "Could not find index", status: ToastStatus.Error };
@@ -174,8 +170,6 @@ export interface DBContext {
   entry: typeof entry,
 }
 
-defineExpose<DBContext>({
-  task,
-  entry
-});
+provide('task', task);
+provide('entry', entry);
 </script>

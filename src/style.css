@@ -26,3 +26,8 @@
   background-size: 200% 200%;
   animation: loadbar 2s linear infinite;
 }
+
+.newButton {
+  background: linear-gradient(-45deg, var(--tw-gradient-stops));
+  background-size: 200% 200%;
+}

@@ -5,7 +5,7 @@
       @mouseenter="() => currentIndex = item.minId"
       @mouseleave="() => currentIndex = ''"
       :class="[
-      'rounded-md',
+        'rounded-md',
         'drop-shadow-md',
         'backdrop-blur-sm',
         'gap-4',
