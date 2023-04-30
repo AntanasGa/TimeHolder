@@ -15,6 +15,7 @@
         <h1 class="text-5xl">Unavailable</h1>
         <p>Could not load in database</p>
       </div>
+      <ToastBar />
     </template>
   </DatabaseContext>
 </template>
@@ -24,4 +25,5 @@ import { RouterView } from 'vue-router';
 import DatabaseContext from '@/components/DatabaseContext.vue';
 import Navigation from '@/components/Navigation.vue';
 import { NoSymbolIcon } from '@heroicons/vue/24/solid';
+import ToastBar from './components/ToastBar.vue';
 </script>

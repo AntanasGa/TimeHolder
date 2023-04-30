@@ -15,9 +15,10 @@ export enum ToastStatus {
 }
 
 export const useToastStore = defineStore('toastStore', {
-  state(): { toasts: IToast[] } {
+  state(): { toasts: IToast[], subs: (() => void)[] } {
     return {
       toasts: [],
+      subs: [],
     };
   },
   actions: {
@@ -31,6 +32,17 @@ export const useToastStore = defineStore('toastStore', {
       };
 
       this.toasts = [...this.toasts, pushableToast];
+      this.subs.forEach((fn) => fn());
+    },
+    subscribe(listener: () => void) {
+      this.subs.push(listener);
+    },
+    unsubscribe(listener: () => void) {
+      const index = this.subs.indexOf(listener);
+      if (index < 0) {
+        return;
+      }
+      this.subs.splice(index, 1);
     },
   },
 });
