@@ -4,7 +4,7 @@ export interface IIndexedDocuments {
 }
 
 export interface ITask extends IndexedItem {
-  taskName?: string,
+  taskName: string,
   taskLink: string,
 }
 
