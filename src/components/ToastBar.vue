@@ -36,11 +36,7 @@ import { XMarkIcon } from '@heroicons/vue/24/solid';
 
 const toasts = useToastStore();
 
-const toastItems = ref<(IToast & { minId: string, max: number })[]>([
-  { title: "Test", message: "Test success message text", status: ToastStatus.Success, minId: numberId(12), timeout: 2000000, max: 30000 },
-  { title: "Test", message: "Test warn message text", status: ToastStatus.Warn, minId: numberId(12), timeout: 1500000, max: 30000 },
-  { title: "Test", message: "Test error message text", status: ToastStatus.Error, minId: numberId(12), timeout: 2000000, max: 30000 },
-]);
+const toastItems = ref<(IToast & { minId: string, max: number })[]>([]);
 
 const currentIndex = ref("");
 
