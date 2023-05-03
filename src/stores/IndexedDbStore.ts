@@ -181,7 +181,7 @@ const usePromiseTransaction = function<T, R, K extends SingleThreadedTasker>(
   object: K,
   resolve: (result: T | PromiseLike<T>) => void,
   reject: (reason: R) => void,
-  ): [(result: T | PromiseLike<T>) => void, (reason: any) => void]
+  ): [(result: T | PromiseLike<T>) => void, (reason: R) => void]
 {
   object.busy = true;
   return [
