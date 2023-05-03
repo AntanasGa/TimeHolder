@@ -19,12 +19,11 @@ export const useForm = <T extends {}>(initialValues: T): FormResponse<T> => {
     // 2 definitions apply, have to override
     values[i] = ref(initialValues[i]) as Ref<T[keyof T]>;
   }
-  
-  return {
+  const result: FormResponse<T> = {
     values,
     isDirty() {
       for (i in startValues.initial) {
-        if (startValues.initial[i] !== values[i].value) {
+        if (startValues.initial[i] !== result.values[i].value) {
           return true;
         }
       }
@@ -32,12 +31,17 @@ export const useForm = <T extends {}>(initialValues: T): FormResponse<T> => {
     },
     reset(updateValues) {
       startValues.initial = { ...updateValues };
-      this.toInitial()
+      result.toInitial()
     },
     toInitial() {
       for(i in startValues.initial) {
-        values[i].value = startValues.initial[i];
+        if (typeof result.values[i] === 'undefined') {
+          result.values[i] = ref(startValues.initial[i]) as Ref<T[keyof T]>;
+        } else {
+          result.values[i].value = startValues.initial[i];
+        }
       }
     },
   };
+  return result;
 };
