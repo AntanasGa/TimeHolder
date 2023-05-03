@@ -189,7 +189,7 @@ const usePromiseTransaction = function<T, R, K extends SingleThreadedTasker>(
       object.busy = false;
       resolve(result);
     },
-    (reason: any) => {
+    (reason: R) => {
       object.busy = false;
       reject(reason);
     }
