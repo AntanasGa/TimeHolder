@@ -43,7 +43,7 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         }
       });
     },
-    update<K extends keyof IIndexedDocuments, R = IIndexedDocuments[K]>(table: K, index: IndexType, payload: R): Promise<void> {
+    update<K extends keyof IIndexedDocuments, R = IIndexedDocuments[K]>(table: K, payload: R): Promise<void> {
       return new Promise(async (res, rej) => {
         if (!this.db) {
           return rej(new Error("Database not initiated"));
@@ -56,7 +56,7 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         
         const [ resolve, reject ] = usePromiseTransaction(this, res, rej);
 
-        const interaction = this.db.transaction(table, "readwrite").objectStore(table).add(payload, index);
+        const interaction = this.db.transaction(table, "readwrite").objectStore(table).put(payload);
 
         interaction.onerror = (ev) => {
           reject(ev)

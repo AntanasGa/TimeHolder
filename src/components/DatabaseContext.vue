@@ -38,39 +38,47 @@ db.initialize().then(async () => {
 const taskUnloadedError: Partial<IToast> = { title: "Task", message: "tasks are not loaded", status: ToastStatus.Error };
 const taskMissingError: Partial<IToast> = { title: "Task", message: "Could not find index", status: ToastStatus.Error };
 const task = {
-  add: (payload: Omit<ITask, keyof IndexedItem>) => {
-    db.insert("task", payload).then((res) => {
-      items.task = [...(items.task ?? []), res];
-      toasts.addToast({title: "Task", message: "Task added"});
-    }).catch((e: IDBRequest | Error) => {
-      let message = e instanceof Error ? e.message : (e.error?.message || "");
-
-      toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+  add: (payload: Omit<ITask, keyof IndexedItem>): Promise<ITask> => {
+    return new Promise((resolve, reject) => {
+      db.insert("task", payload).then((res) => {
+        items.task = [...(items.task ?? []), res];
+        toasts.addToast({title: "Task", message: "Task added"});
+        resolve(res);
+      }).catch((e: IDBRequest | Error) => {
+        let message = e instanceof Error ? e.message : (e.error?.message || "");
+        toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+        reject(e);
+      });
     });
   },
-  update: (key: IndexType, payload: ITask) => {
-    if (!items.task) {
-      toasts.addToast(taskUnloadedError);
-      return;
-    }
-
-    const index = items.task.map(x => x.id).indexOf(key);
-    if (index === -1) {
-      toasts.addToast(taskMissingError);
-      return;
-    }
-
-    db.update("task", key, payload).then(() => {
+  update: (key: IndexType, payload: ITask): Promise<ITask> => {
+    return new Promise((resolve, reject) => {
       if (!items.task) {
         toasts.addToast(taskUnloadedError);
-        return;
+        return reject(new Error(taskUnloadedError.message));
       }
-      items.task = items.task.splice(index, 0, payload);
-      toasts.addToast({title: "Task", message: "Task updated"});
-    }).catch((e: IDBRequest | Error) => {
-      let message = e instanceof Error ? e.message : (e.error?.message || "");
-
-      toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+  
+      const index = items.task.map(x => x.id).indexOf(key);
+      if (index === -1) {
+        toasts.addToast(taskMissingError);
+        return reject(new Error(taskMissingError.message));
+      }
+  
+      db.update("task", payload).then(() => {
+        if (!items.task) {
+          toasts.addToast(taskUnloadedError);
+          return reject(taskUnloadedError.message);
+        }
+        const newTasks = [...items.task];
+        newTasks.splice(index, 1, payload);
+        items.task = newTasks;
+        toasts.addToast({title: "Task", message: "Task updated"});
+        resolve(payload);
+      }).catch((e: IDBRequest | Error) => {
+        let message = e instanceof Error ? e.message : (e.error?.message || "");
+        toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+        reject(e);
+      });
     });
   },
   remove: (key: IndexType) => {
@@ -125,12 +133,14 @@ const entry = {
       return;
     }
 
-    db.update("entity", key, payload).then(() => {
+    db.update("entity", payload).then(() => {
       if (!items.entity) {
         toasts.addToast(entryUnloadedError);
         return;
       }
-      items.entity = items.entity.splice(index, 0, payload);
+      const newEntries = [...items.entity];
+      newEntries.splice(index, 1, payload);
+      items.entity = newEntries;
       toasts.addToast({title: "Time entry", message: "Time entry updated"});
     }).catch((e: IDBRequest | Error) => {
       let message = e instanceof Error ? e.message : (e.error?.message || "");
