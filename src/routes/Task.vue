@@ -1,9 +1,11 @@
 <template>
   <Modal :onCancel="onCancel">
     <div class="rounded-md drop-shadow-md backdrop-blur-sm bg-white p-2">
-      <h1 class="bold text-2xl">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
-      <input type="string" v-model="task.taskName.value">
-      <input type="string" v-model="task.taskLink.value">
+      <h1 class="bold text-2xl mb-2">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
+      <div class="flex flex-col gap-4">
+        <StyledInput v-model="task.taskName.value" :name="'taskName'" :title="'Task name'" />
+        <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" />
+      </div>
       <a v-if="id > -1" class="flex gap-1" :href="task.taskLink.value">To task <LinkIcon class="w-3 h-3" /></a>
     </div>
   </Modal>
@@ -12,6 +14,7 @@
 <script setup lang="ts">
 import { DBContext } from '@/components/DatabaseContext.vue';
 import Modal from '@/components/Modal.vue';
+import StyledInput from '@/components/formFunctions/StyledInput.vue';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexedItem } from '@/stores/documents';
 import { useForm, FormResponse, RefObject } from '@/util/Form';
