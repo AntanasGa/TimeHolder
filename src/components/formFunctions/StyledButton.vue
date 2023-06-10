@@ -1,6 +1,6 @@
 <template>
   <button :class="[
-      'rounded-md w-full p-1 font-bold transition-all',
+      'rounded-md p-1 font-bold transition-all',
       props.class,
       ...disabled ? ['cursor-not-allowed'] : [],
     ]"

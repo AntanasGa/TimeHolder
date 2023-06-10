@@ -1,5 +1,5 @@
 <template>
-  <section aria-label="Toasts" title="Toasts" class="fixed top-2 right-2 flex flex-col gap-2 max-h-screen">
+  <section aria-label="Toasts" title="Toasts" class="fixed top-2 right-2 flex flex-col gap-2 max-h-screen z-10">
     <div v-for="item in toastItems"
       :key="item.minId"
       @mouseenter="() => currentIndex = item.minId"

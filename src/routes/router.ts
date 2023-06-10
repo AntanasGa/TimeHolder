@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory, NavigationGuardWithThis, RouteLocationNormalized, RouterView } from 'vue-router'
-import Index from '@/routes/Index.vue';
-import Err404 from '@/routes/error/Err404.vue';
-import Task from '@/routes/Task.vue';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
 import { useIndexedDbStore } from '@/stores/IndexedDbStore';
-
+import Err404 from '@/routes/error/Err404.vue';
+import Index from '@/routes/Index.vue';
+import Task from '@/routes/Task.vue';
+import EntryIndex from '@/routes/entities/Index.vue';
+import Entity from '@/routes/entities/Entity.vue';
 
 const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWithThis<undefined>> => {
   return {
@@ -103,6 +104,23 @@ const router = createRouter({
               component: Task,
               beforeEnter: taskGuard,
             },
+          ],
+        },
+        {
+          path: '/entities',
+          name: 'Entities',
+          component: EntryIndex,
+          children: [
+            {
+              path: 'new',
+              name: 'NewEntity',
+              component: Entity,
+            },
+            {
+              path: ':id(\\d+)',
+              name: 'Entity',
+              component: Entity,
+            }
           ],
         },
         {

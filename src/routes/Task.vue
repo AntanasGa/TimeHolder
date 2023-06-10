@@ -1,11 +1,23 @@
 <template>
   <Modal :onCancel="onCancel">
-    <div class="relative rounded-md drop-shadow-md backdrop-blur-sm bg-white p-2">
+    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white p-2 gap-2">
         <div v-if="isWorking" class="absolute loadbar h-1 top-0 left-0 right-0 rounded-full"></div>
         <h1 class="font-bold text-2xl mb-2">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
         <div class="flex flex-col gap-4 mb-4">
           <StyledInput v-model="task.taskName.value" :name="'taskName'" :title="'Task name'" />
-          <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" />
+          <div class="flex gap-2 items-center">
+            <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" />
+            <a :class="[
+              'p-2 transition-all',
+              id === -1
+                ? 'absolute w-0 opacity-0 pointer-events-none'
+                : 'static w-9 opacity-100',
+              ]"
+              :href="id > -1 ? task.taskLink.value : ''"
+              rel="noopener noreferrer"
+              target="_blank"
+            ><LinkIcon class="w-5 h-5" /></a>
+          </div>
           <div class="flex gap-2">
             <StyledButton :class="[
               'col flex-1',
@@ -20,14 +32,17 @@
               'col flex-1',
               isDirty()
                 ? 'text-white bg-red-400 hover:bg-red-500 active:bg-red-600'
-                : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active-bg-zinc-200',
+                : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active:bg-zinc-200',
               ].join(' ')"
               :disabled="!isDirty()"
               @click="() => isDirty() && onSave()"
             >Save</StyledButton>
           </div>
         </div>
-        <a v-if="id > -1" class="flex gap-1" :href="task.taskLink.value" rel="noopener noreferrer" target="_blank">To task <LinkIcon class="w-3 h-3" /></a>
+        <div v-if="id > -1" class="flex justify-between">
+          <RouterLink class="flex gap-1" :to="{name: 'Entities', query: { taskId: id }}">Entries <LinkIcon class="w-3 h-3" /></RouterLink>
+          <RouterLink class="flex gap-1" :to="{name: 'NewEntity', query: { taskId: id } }">Register Time <LinkIcon class="w-3 h-3" /></RouterLink>
+        </div>
       </div>
   </Modal>
 </template>
@@ -72,7 +87,6 @@ const initializeForm = (taskItem: newOrExistingTask) => {
 }
 
 function onCancel() {
-  console.log("on cancel triggered");
   const confirm = isDirty() ? window.confirm("There are unsaved changes, are you sure you want to leave") : true;
   if (!confirm) {
     return;

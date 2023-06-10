@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full relative group pt-1" title="foo">
+  <div class="relative group pt-1" title="foo">
     <input
       :type="type || 'text'"
       class="relative outline-none rounded-md w-full bg-zinc-50 focus:bg-zinc-200 p-2 pl-4 peer/input hover:bg-zinc-100"

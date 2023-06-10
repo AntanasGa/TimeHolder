@@ -7,7 +7,7 @@
             <RectangleStackIcon :class="className" />
           </template>
         </NavigationLink>
-        <NavigationLink to="/entries" title="Entries">
+        <NavigationLink to="/entities" title="Entries">
           <template #default="{ className }">
             <ListBulletIcon :class="className"/>
           </template>
