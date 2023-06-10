@@ -1,39 +1,17 @@
 <template>
-  <slot :busy="db.busy" :accessable="!denyDbAccess"></slot>
+  <slot :busy="db.busy" :accessable="!db.denyAccess"></slot>
 </template>
 
 <script setup lang="ts">
 import { useIndexedDbStore } from '@/stores/IndexedDbStore';
-import { useToastStore, IToast, ToastStatus } from '@/stores/ToastStore';
+import { useMessagingStore, IToast, ToastStatus } from '@/stores/MessagingStore';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexType, IndexedItem } from '@/stores/documents';
-import { provide, ref } from 'vue';
+import { provide } from 'vue';
 
 const items = useDBCacheStore();
-const toasts = useToastStore();
+const toasts = useMessagingStore();
 const db = useIndexedDbStore();
-
-const denyDbAccess = ref(false);
-
-db.initialize().then(async () => {
-  let shouldStayDenied = false;
-  await db.fetch("entity").then((res) => {
-    items.entity = res;
-  }).catch((e: IDBRequest | Error) => {
-    shouldStayDenied = true;
-    let message = e instanceof Error ? e.message : (e.error?.message || "");
-    toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
-  });
-
-  await db.fetch("task").then((res) => {
-    items.task = res;
-  }).catch((e: IDBRequest | Error) => {
-    shouldStayDenied = true;
-    let message = e instanceof Error ? e.message : (e.error?.message || "");
-    toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
-  });
-  denyDbAccess.value = shouldStayDenied;
-});
 
 const taskUnloadedError: Partial<IToast> = { title: "Task", message: "tasks are not loaded", status: ToastStatus.Error };
 const taskMissingError: Partial<IToast> = { title: "Task", message: "Could not find index", status: ToastStatus.Error };

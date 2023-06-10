@@ -4,6 +4,7 @@ import { IIndexedDocuments, IndexType, IndexedItem } from "./documents";
 interface SingleThreadedTasker {
   busy: boolean,
   persist: boolean,
+  denyAccess: boolean,
 }
 
 interface IIndexedDbStore extends SingleThreadedTasker {
@@ -16,6 +17,7 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
       busy: false,
       db: undefined,
       persist: false,
+      denyAccess: false,
     };
   },
   actions: {
@@ -165,11 +167,11 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         };
 
         db.onerror = (err) => {
-          return reject(err);
+          return reject(err.target);
         }
 
         db.onblocked = (e) => {
-          console.log(e);
+          console.log(e.target);
           return reject(e);
         }
       });

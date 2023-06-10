@@ -29,12 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import { IToast, ToastStatus, useToastStore } from '@/stores/ToastStore';
+import { IToast, ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
 import { onUnmounted, ref } from 'vue';
 import { numberId } from '@/util/Id'
 import { XMarkIcon } from '@heroicons/vue/24/solid';
 
-const toasts = useToastStore();
+const toasts = useMessagingStore();
 
 const toastItems = ref<(IToast & { minId: string, max: number })[]>([]);
 

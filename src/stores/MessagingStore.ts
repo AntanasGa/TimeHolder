@@ -14,7 +14,7 @@ export enum ToastStatus {
   Error,
 }
 
-export const useToastStore = defineStore('toastStore', {
+export const useMessagingStore = defineStore('toastStore', {
   state(): { toasts: IToast[], subs: (() => void)[] } {
     return {
       toasts: [],

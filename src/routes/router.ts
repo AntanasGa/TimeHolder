@@ -3,6 +3,8 @@ import Index from '@/routes/Index.vue';
 import Err404 from '@/routes/error/Err404.vue';
 import Task from '@/routes/Task.vue';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
+import { ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
+import { useIndexedDbStore } from '@/stores/IndexedDbStore';
 
 
 const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWithThis<undefined>> => {
@@ -15,19 +17,61 @@ const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWit
   }
 }
 
-const taskGuard: NavigationGuardWithThis<undefined> = (to) => {
+const preload: NavigationGuardWithThis<undefined> = async (_) => {
+  const toasts = useMessagingStore();
+  const db = useIndexedDbStore();
   const cache = useDBCacheStore();
-    if (!("id" in to.params)) {
-      return true;
-    }
-    const id = +to.params["id"];
-    const possibleTask = cache.task?.find((x) => x.id === id);
-    if (!possibleTask) {
-      return generate404(to);
-    }
-    
-    
+  let shouldStayDenied = false;
+  const onDeny = () => {
+    db.denyAccess = shouldStayDenied;
     return true;
+  };
+  await db.initialize().catch((err: EventTarget & {error: Error}) => {
+    shouldStayDenied = true;
+    toasts.addToast({title: "Database initialize", message: err.error.message, status: ToastStatus.Error});
+  });
+  if (shouldStayDenied) {
+    return onDeny();
+  }
+
+  await db.fetch("entity").then((res) => {
+    cache.entity = res;
+  }).catch((e: IDBRequest | Error) => {
+    shouldStayDenied = true;
+    let message = e instanceof Error ? e.message : (e.error?.message || "");
+    toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
+  });
+  if (shouldStayDenied) {
+    return onDeny();
+  }
+
+  await db.fetch("task").then((res) => {
+    cache.task = res;
+  }).catch((e: IDBRequest | Error) => {
+    shouldStayDenied = true;
+    let message = e instanceof Error ? e.message : (e.error?.message || "");
+    toasts.addToast({title: "Database fetch", message, status: ToastStatus.Error});
+  });
+  if (shouldStayDenied) {
+    return onDeny();
+  }
+  return true;
+}
+
+const taskGuard: NavigationGuardWithThis<undefined> = async (to) => {
+  const cache = useDBCacheStore();
+
+  if (!("id" in to.params)) {
+    return true;
+  }
+
+  const id = +to.params["id"];
+  const possibleTask = cache.task?.find((x) => x.id === id);
+  if (!possibleTask) {
+    return generate404(to);
+  }
+
+  return true;
 };
 
 const router = createRouter({
@@ -36,6 +80,7 @@ const router = createRouter({
     {
       path: '/',
       component: RouterView,
+      beforeEnter: preload,
       children: [
         {
           path: '',
