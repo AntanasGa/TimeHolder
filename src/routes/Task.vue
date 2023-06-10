@@ -13,6 +13,7 @@
                 ? 'text-white bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-700'
                 : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active-bg-zinc-200',
               ].join(' ')"
+              :disabled="!isDirty()"
               @click="() => isDirty() && toInitial()"
             >Reset</StyledButton>
             <StyledButton :class="[
@@ -21,6 +22,7 @@
                 ? 'text-white bg-red-400 hover:bg-red-500 active:bg-red-600'
                 : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active-bg-zinc-200',
               ].join(' ')"
+              :disabled="!isDirty()"
               @click="() => isDirty() && onSave()"
             >Save</StyledButton>
           </div>
