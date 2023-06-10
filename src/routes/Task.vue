@@ -14,7 +14,7 @@
                 : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active-bg-zinc-200',
               ].join(' ')"
               @click="() => isDirty() && toInitial()"
-            >Cancel</StyledButton>
+            >Reset</StyledButton>
             <StyledButton :class="[
               'col flex-1',
               isDirty()
@@ -70,6 +70,7 @@ const initializeForm = (taskItem: newOrExistingTask) => {
 }
 
 function onCancel() {
+  console.log("on cancel triggered");
   const confirm = isDirty() ? window.confirm("There are unsaved changes, are you sure you want to leave") : true;
   if (!confirm) {
     return;
