@@ -43,16 +43,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="!mappedEntities || !mappedEntities.length">
+        <tr v-if="!cache.entitesWithTasks || !cache.entitesWithTasks.length">
           <td colspan="7" class="text-2xl text-center">No entities present</td>
         </tr>
-        <tr v-else v-for="entity in mappedEntities" :key="entity.id">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><PencilIcon class="h-4 w-4" /></td>
+        <tr v-else v-for="entity in cache.entitesWithTasks" :key="entity.id">
+          <td>{{ entity.id }}</td>
+          <td>{{ entity.task.taskName }}</td>
+          <td>{{ entity.comment }}</td>
+          <td>{{ dateFormat.format(new Date(entity.startTime)) }}</td>
+          <td>{{ (entity.endTime && dateFormat.format(new Date(entity.endTime))) || "-" }}</td>
+          <td>{{ (entity.endTime && difFormat.format(new Date(entity.endTime - entity.startTime))) || '-' }}</td>
+          <td><RouterLink :to="{ name: 'Entity', params: { id: entity.id } }"><PencilIcon class="h-4 w-4" /></RouterLink></td>
         </tr>
       </tbody>
     </table>
@@ -67,9 +68,11 @@ import StyledButton from '@/components/formFunctions/StyledButton.vue';
 import { useRoute } from 'vue-router';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 
+const dateFormat = new Intl.DateTimeFormat(navigator.language, { timeZone: "UTC", year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
+const difFormat = new Intl.DateTimeFormat('en-GB', { timeZone: "UTC", hour: 'numeric', minute: '2-digit', second: '2-digit'});
+
 const route = useRoute();
 const selectedTask = ref(route.query["taskId"]);
 const showFilters = ref(typeof selectedTask.value !== 'undefined');
 const cache = useDBCacheStore();
-const mappedEntities = cache.entitesWithTasks;
 </script>
