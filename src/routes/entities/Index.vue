@@ -12,11 +12,19 @@
             ].join(' ')"
             @click="() => showFilters = !showFilters"
           >
-          <h3 class="font-bold text-lg">Filters </h3>
+          <h3 class="font-bold text-lg">Filters</h3>
           <ChevronDownIcon :class="['w-4 h-4 transition-all', showFilters ? 'scale-y-100' : '-scale-y-100']" />
         </StyledButton>
         </div>
-        <div :class="['w-full bg-stone-100 rounded-md overflow-hidden transition-all', ...(showFilters ? ['px-4 pt-12 pb-4 h-full -translate-y-10'] : ['h-0 px-4 pt-0 pb-0 -translate-y-100 pointer-events-none opacity-0'])]">
+        <div :class="[
+          'flex w-full bg-stone-100 rounded-md transition-all gap-2',
+          ...(showFilters ? ['px-4 pt-12 pb-4 h-full -translate-y-10'] : ['h-0 px-4 pt-0 pb-0 -translate-y-100 pointer-events-none opacity-0'])
+        ]">
+          <SearchableSelect name="TaskIndex"
+            title="Task"
+            :selection="cache.task?.map(x => x.taskName)"
+            :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
+            @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1" />
         </div>
       </div>
     </div>
@@ -46,7 +54,7 @@
         <tr v-if="!cache.entitesWithTasks || !cache.entitesWithTasks.length">
           <td colspan="7" class="text-2xl text-center">No entities present</td>
         </tr>
-        <tr v-else v-for="entity in cache.entitesWithTasks" :key="entity.id">
+        <tr v-else v-for="entity in entities" :key="entity.id">
           <td>{{ entity.id }}</td>
           <td>{{ entity.task.taskName }}</td>
           <td>{{ entity.comment }}</td>
@@ -62,17 +70,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ChevronDownIcon, PencilIcon, PlusIcon } from '@heroicons/vue/24/solid';
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
+import SearchableSelect from '@/components/formFunctions/SearchableSelect.vue';
 
 const dateFormat = new Intl.DateTimeFormat(navigator.language, { timeZone: "UTC", year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 const difFormat = new Intl.DateTimeFormat('en-GB', { timeZone: "UTC", hour: 'numeric', minute: '2-digit', second: '2-digit'});
 
 const route = useRoute();
-const selectedTask = ref(route.query["taskId"]);
-const showFilters = ref(typeof selectedTask.value !== 'undefined');
+const router = useRouter();
 const cache = useDBCacheStore();
+
+const selectedTask = computed({
+  get() {
+    return +(route.query["taskId"] ?? -1);
+  },
+  set(v) {
+    router.replace({name: "Entities", query: { taskId: v > -1 ? v : undefined }})
+  }
+});
+const showFilters = ref(typeof selectedTask.value !== 'undefined');
+
+const entities = computed(() => cache.entitesWithTasks?.filter(x => (selectedTask.value === -1 || x.taskId === selectedTask.value) ));
 </script>
