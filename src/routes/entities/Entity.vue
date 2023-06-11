@@ -143,7 +143,9 @@ function onSave() {
 }
 
 if (id.value < 0) {
-  initializeForm({taskId: selectedTask.value, comment: "", startTime: new Date().valueOf(), endTime: undefined});
+  const startDate = new Date();
+  clearSeconds(startDate);
+  initializeForm({taskId: selectedTask.value, comment: "", startTime: startDate.valueOf(), endTime: undefined});
 } else {
   const tmpTask = cache.entity?.find((x) => x.id === id.value);
   if (!tmpTask) {
