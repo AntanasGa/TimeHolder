@@ -75,10 +75,10 @@
           <td>{{ entity.id }}</td>
           <td>{{ entity.task.taskName }}</td>
           <td>{{ entity.comment }}</td>
-          <td>{{  entity.startTime ? dateFormat.format(new Date(entity.startTime)) : "-" }}</td>
-          <td>{{ (entity.startTime && entity.endTime && dateFormat.format(new Date(entity.endTime))) || "-" }}</td>
+          <td>{{  !groupBy ? dateFormat.format(new Date(entity.startTime)) : "-" }}</td>
+          <td>{{ (!groupBy && entity.endTime && dateFormat.format(new Date(entity.endTime))) || "-" }}</td>
           <td>{{ (entity.endTime && difFormat.format(new Date(entity.endTime - entity.startTime))) || '-' }}</td>
-          <td><template v-if="entity.startTime"><RouterLink :to="{ name: 'Entity', params: { id: entity.id } }"><PencilIcon class="h-4 w-4" /></RouterLink></template></td>
+          <td><template v-if="!groupBy"><RouterLink :to="{ name: 'Entity', params: { id: entity.id } }"><PencilIcon class="h-4 w-4" /></RouterLink></template></td>
         </tr>
       </tbody>
     </table>
