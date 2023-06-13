@@ -7,6 +7,7 @@ import Index from '@/routes/Index.vue';
 import Task from '@/routes/Task.vue';
 import EntryIndex from '@/routes/entities/Index.vue';
 import Entity from '@/routes/entities/Entity.vue';
+import Settings from '@/routes/Settings.vue';
 
 const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWithThis<undefined>> => {
   return {
@@ -122,6 +123,11 @@ const router = createRouter({
               component: Entity,
             }
           ],
+        },
+        {
+          path: '/settings',
+          name: 'Settings',
+          component: Settings
         },
         {
           path: ':catchAll(.*)',

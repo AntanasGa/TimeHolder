@@ -12,9 +12,9 @@
             <ListBulletIcon :class="className"/>
           </template>
         </NavigationLink>
-        <NavigationLink to="/file" title="Import/Export">
+        <NavigationLink to="/settings" title="Settings">
           <template #default="{ className }">
-            <ArrowsUpDownIcon :class="className"/>
+            <Cog6ToothIcon :class="className"/>
           </template>
         </NavigationLink>
       </ul>
@@ -23,6 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { ListBulletIcon, RectangleStackIcon, ArrowsUpDownIcon } from '@heroicons/vue/24/solid';
+import { ListBulletIcon, RectangleStackIcon, Cog6ToothIcon } from '@heroicons/vue/24/solid';
 import NavigationLink from './navigation/NavigationLink.vue';
 </script>
