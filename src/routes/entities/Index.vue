@@ -1,7 +1,10 @@
 <template>
     <div class="sticky flex flex-col top-0 w-full z-[1] bg-white/50 backdrop-blur-md">
     <div class="flex flex-col container mx-auto mb-10 mt-5 gap-4 flex-wrap">
-      <h1 class="font-bold text-6xl">Entities</h1>
+      <div class="flex">
+        <h1 class="font-bold text-6xl grow">Entities</h1>
+        <h1 v-if="groupBy" class="font-bold text-6xl shrink">{{ difFormat.format(entities?.reduce((acc, { endTime: et }) => acc += (et ?? 0), 0)) }}</h1>
+      </div>
       <div class="flex flex-col">
         <div>
           <StyledButton :class="[
