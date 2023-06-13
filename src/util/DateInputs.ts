@@ -16,7 +16,7 @@ const getUtcNow = () => {
   return date.valueOf();
 }
 
-export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean = true) => {
+export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean = true, onChange?: () => void) => {
 
   const time = computed({
     get() {
@@ -36,6 +36,7 @@ export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean 
       const date = new Date(ref.value ?? getUtcNow());
       date.setUTCHours(+hour, +minute);
       ref.value = date.valueOf();
+      onChange?.();
     }
   });
   const date = computed({
@@ -55,6 +56,7 @@ export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean 
       const date = new Date(ref.value ?? getUtcNow());
       date.setUTCFullYear(+year, (+month - 1), +day);
       ref.value = date.valueOf();
+      onChange?.()
     }
   });
   return [date, time];
