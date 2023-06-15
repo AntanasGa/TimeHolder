@@ -104,9 +104,10 @@ const router = useRouter();
 const cache = useDBCacheStore();
 
 const {start, end, groupByTask} = route.query;
-const startDate = ref<number | undefined>(start ? +start : undefined);
-const endDate = ref<number | undefined>(end ? +end : undefined);
+const startDate = ref<number | undefined>(start && !isNaN(+start) ? +start : undefined);
+const endDate = ref<number | undefined>(end && !isNaN(+end) ? +end : undefined);
 const groupBy = ref<boolean>(groupByTask !== undefined && groupByTask !== null);
+
 const getQuery = ({ taskId }: { taskId: number } = { taskId: selectedTask.value }) => {
   return { taskId: taskId > -1 ? taskId : undefined, start: startDate.value, end: endDate.value, groupByTask: (groupBy.value && 1 ) || undefined };
 }
@@ -119,7 +120,7 @@ const selectedTask = computed({
     router.replace({ name: "Entities", query: getQuery({ taskId: v }) })
   }
 });
-const showFilters = ref(typeof selectedTask.value !== 'undefined');
+const showFilters = ref(selectedTask.value > -1 || !!startDate.value || !!endDate.value);
 
 const [endDateDate, endDateTime] = useDateInputs(endDate, false, () => router.replace({ query: getQuery() }));
 const [startDateDate, startDateTime] = useDateInputs(startDate, false, () => router.replace({ query: getQuery() }));
