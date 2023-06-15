@@ -1,5 +1,5 @@
 <template>
-  <div class="sticky flex top-0 w-full z-[1] bg-white/50 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-900 dark:to-white/10 backdrop-blur-md">
+  <div class="sticky flex top-0 w-full z-[1] bg-white/50 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-900 dark:to-white/10 backdrop-blur-md transition-all">
     <div class="flex flex-col container mx-auto mb-10 mt-5 gap-4 flex-wrap">
     <div class="flex">
       <h1 class="font-bold text-6xl grow">Entities</h1>
