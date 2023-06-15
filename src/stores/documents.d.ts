@@ -3,6 +3,8 @@ export interface IIndexedDocuments {
   entity: IEntity,
 }
 
+export type CacheTypes = { [K in keyof IIndexedDocuments]?: IIndexedDocuments[K][]};
+
 export interface ITask extends IndexedItem {
   taskName: string,
   taskLink: string,

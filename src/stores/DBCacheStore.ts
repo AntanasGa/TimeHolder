@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
-import { IIndexedDocuments } from "./documents";
+import { CacheTypes } from "./documents";
+
 
 export const useDBCacheStore = defineStore('DBCacheStore', {
-  state(): { [K in keyof IIndexedDocuments]?: IIndexedDocuments[K][]} {
+  state(): CacheTypes {
     return {
       entity: undefined,
       task: undefined,
