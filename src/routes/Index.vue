@@ -4,7 +4,7 @@
       <h1 class="font-bold text-6xl">Overview</h1>
     </div>
   </div>
-  <section class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+  <section class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-5">
     <RouterLink to="/tasks/new" class="rounded-md drop-shadow-md backdrop-blur-sm w-full flex justify-between p-2 items-center group bg-gradient-to-r border-red-500 border-l-0 hover:border-l-8 newButton from-red-600 via-red-300 to-red-600 bg-left-top hover:bg-center transition-all">
       <h2 class="font-bold text-4xl text-white">New</h2>
         <PlusIcon class="w-16 h-16 text-white"/>

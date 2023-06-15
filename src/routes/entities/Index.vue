@@ -46,7 +46,7 @@
       </div>
     </div>
   </div>
-  <div class="container mx-auto overflow-x-auto">
+  <section class="container mx-auto overflow-x-auto mt-5">
     <table class="w-full table-auto">
       <thead>
         <tr class="bg-zinc-200">
@@ -82,7 +82,7 @@
         </tr>
       </tbody>
     </table>
-  </div>
+  </section>
   <RouterView />
 </template>
 
