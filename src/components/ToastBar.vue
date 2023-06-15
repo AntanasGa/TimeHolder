@@ -58,13 +58,13 @@ function onToast() {
 function getColor(status: ToastStatus, item: "background" | "progress" = "background") {
   switch (status) {
     case ToastStatus.Success: 
-      return item === "background" ? "bg-green-300" : "bg-green-500";
+      return item === "background" ? "bg-green-300 dark:bg-green-800" : "bg-green-500 dark:bg-green-600";
     case ToastStatus.Warn:
-      return item === "background" ? "bg-orange-300" : "bg-orange-500";
+      return item === "background" ? "bg-orange-300 dark:bg-orange-800" : "bg-orange-500 dark:bg-orange-600";
     case ToastStatus.Error:
-      return item === "background" ? "bg-red-300" : "bg-red-500";
+      return item === "background" ? "bg-red-300 dark:bg-red-800" : "bg-red-500 dark:bg-red-600";
     default:
-      return item === "background" ? "bg-zinc-100" : "bg-zinc-400";
+      return item === "background" ? "bg-zinc-100 dark:bg-stone-800" : "bg-zinc-400 dark:bg-stone-600";
   }
 }
 

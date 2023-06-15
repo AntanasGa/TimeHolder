@@ -1,55 +1,55 @@
 <template>
-    <div class="sticky flex flex-col top-0 w-full z-[1] bg-white/50 backdrop-blur-md">
+  <div class="sticky flex top-0 w-full z-[1] bg-white/50 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-900 dark:to-white/10 backdrop-blur-md">
     <div class="flex flex-col container mx-auto mb-10 mt-5 gap-4 flex-wrap">
-      <div class="flex">
-        <h1 class="font-bold text-6xl grow">Entities</h1>
-        <h1 v-if="groupBy" class="font-bold text-6xl shrink">{{ difFormat.format(entities?.reduce((acc, { endTime: et }) => acc += (et ?? 0), 0)) }}</h1>
+    <div class="flex">
+      <h1 class="font-bold text-6xl grow">Entities</h1>
+      <h1 v-if="groupBy" class="font-bold text-6xl shrink">{{ difFormat.format(entities?.reduce((acc, { endTime: et }) => acc += (et ?? 0), 0)) }}</h1>
+    </div>
+    <div class="flex flex-col">
+      <div>
+        <StyledButton :class="[
+            'relative flex items-center gap-1 z-10',
+            showFilters
+              ? 'bg-red-200 dark:bg-red-700 hover:bg-red-300 dark:hover:bg-red-600'
+              : 'bg-zinc-100 dark:bg-stone-900 hover:bg-zinc-200 dark:hover:bg-stone-700'
+          ].join(' ')"
+          @click="() => showFilters = !showFilters"
+        >
+        <h3 class="font-bold text-lg">Filters</h3>
+        <ChevronDownIcon :class="['w-4 h-4 transition-all', showFilters ? 'scale-y-100' : '-scale-y-100']" />
+      </StyledButton>
       </div>
-      <div class="flex flex-col">
-        <div>
-          <StyledButton :class="[
-              'relative flex items-center gap-1 z-10',
-              showFilters
-                ? 'bg-red-200 hover:bg-red-300'
-                : 'bg-zinc-100 hover:bg-zinc-200'
-            ].join(' ')"
-            @click="() => showFilters = !showFilters"
-          >
-          <h3 class="font-bold text-lg">Filters</h3>
-          <ChevronDownIcon :class="['w-4 h-4 transition-all', showFilters ? 'scale-y-100' : '-scale-y-100']" />
-        </StyledButton>
-        </div>
-        <div :class="[
-          'flex flex-col w-full bg-stone-100 rounded-md transition-all gap-2',
-          ...(showFilters ? ['px-4 pt-12 pb-4 h-full -translate-y-10'] : ['h-0 px-4 pt-0 pb-0 -translate-y-100 pointer-events-none opacity-0'])
-        ]">
-          <SearchableSelect name="TaskIndex"
-            title="Task"
-            :selection="cache.task?.map(x => x.taskName)"
-            :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
-            @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1" />
-            <div class="flex flex-nowrap w-full justify-around gap-2">
-              <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
-              <StyledInput type="time" title="Start time" class="w-full" name="FilterStartDateTime" v-model="startDateTime" keepUp />
-              <StyledButton class="bg-zinc-50 hover:bg-zinc-100" @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
-            </div>
-            <div class="flex flex-nowrap w-full justify-around gap-2">
-              <StyledInput type="date" title="End Date" class="w-full" name="FilterEndDateDate" v-model="endDateDate" keepUp />
-              <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
-              <StyledButton class="bg-zinc-50 hover:bg-zinc-100" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
-            </div>
-            <div class="flex gap-2">
-              <input type="checkbox" id="groupTasksSelector" v-model="groupBy" @change="() => router.replace({ query: getQuery() })">
-              <label for="groupTasksSelector">Group by task</label>
-            </div>
-        </div>
+      <div :class="[
+        'flex flex-col w-full bg-stone-100 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-800 dark:to-stone-700 rounded-md transition-all gap-2',
+        ...(showFilters ? ['px-4 pt-12 pb-4 h-full -translate-y-10'] : ['h-0 px-4 pt-0 pb-0 -translate-y-100 pointer-events-none opacity-0'])
+      ]">
+        <SearchableSelect name="TaskIndex"
+          title="Task"
+          :selection="cache.task?.map(x => x.taskName)"
+          :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
+          @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1" />
+          <div class="flex flex-nowrap w-full justify-around gap-2">
+            <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
+            <StyledInput type="time" title="Start time" class="w-full" name="FilterStartDateTime" v-model="startDateTime" keepUp />
+            <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+          </div>
+          <div class="flex flex-nowrap w-full justify-around gap-2">
+            <StyledInput type="date" title="End Date" class="w-full" name="FilterEndDateDate" v-model="endDateDate" keepUp />
+            <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
+            <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+          </div>
+          <div class="flex gap-2">
+            <input type="checkbox" id="groupTasksSelector" v-model="groupBy" @change="() => router.replace({ query: getQuery() })">
+            <label for="groupTasksSelector">Group by task</label>
+          </div>
       </div>
+    </div>
     </div>
   </div>
   <section class="container mx-auto overflow-x-auto mt-5">
     <table class="w-full table-auto">
       <thead>
-        <tr class="bg-zinc-200">
+        <tr class="bg-zinc-200 dark:bg-stone-800">
           <th>ID</th>
           <th>Task</th>
           <th>Comment</th>

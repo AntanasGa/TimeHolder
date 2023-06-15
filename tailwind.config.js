@@ -4,7 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx,css}"
   ],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     extend: {
       transitionProperty: {

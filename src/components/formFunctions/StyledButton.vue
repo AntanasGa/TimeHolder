@@ -5,7 +5,7 @@
       ...disabled ? ['cursor-not-allowed'] : [],
     ]"
     type="button"
-    @click="(e) => emit('click', e)"
+    @click="(e) => !disabled && emit('click', e)"
     :disabled="disabled"
   >
     <slot></slot>
@@ -16,6 +16,7 @@
 const props = defineProps({
   class: String,
   disabled: Boolean,
+  title: String,
 });
 
 const emit = defineEmits<{

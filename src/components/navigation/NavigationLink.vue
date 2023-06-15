@@ -4,10 +4,10 @@
     'rounded-md',
     'group',
     'transition-colors',
-    ...route.fullPath.startsWith(to) ? ['bg-red-200', 'hover:bg-red-400'] : ['bg-white/30', 'hover:bg-red-500'],
+    ...route.fullPath.startsWith(to) ? ['bg-red-200 dark:bg-red-900', 'hover:bg-red-400 dark:hover:bg-red-700'] : ['bg-white/30 dark:bg-white/0', 'hover:bg-red-500 dark:hover:bg-red-600'],
   ]">
     <RouterLink :to="to" :title="title">
-      <slot className="h-12 w-12 relative translate-y-0 text-black-500 transition-popout group-hover:text-white group-hover:-translate-y-3"></slot>
+      <slot className="h-12 w-12 relative translate-y-0 text-black-500 dark:text-stone-300 transition-popout group-hover:text-white group-hover:-translate-y-3"></slot>
       <span
         :class="[
           'text-xs',

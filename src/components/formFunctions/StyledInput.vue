@@ -2,7 +2,7 @@
   <div class="relative group pt-1" :title="title" :data-tf="JSON.stringify(props)">
     <input v-if="type !== 'area'"
       :type="type || 'text'"
-      :class="['relative outline-none rounded-md w-full bg-zinc-50 focus:bg-zinc-200 p-2 pl-4 peer/input hover:bg-zinc-100 text-left', className]"
+      :class="['relative outline-none rounded-md w-full p-2 pl-4 peer/input text-left bg-zinc-50 dark:bg-stone-900 focus:bg-zinc-200 dark:focus:bg-stone-700 hover:bg-zinc-100 dark:hover:bg-stone-600', className]"
       :name="name"
       :id="name"
       v-model="value"
@@ -12,7 +12,7 @@
     <textarea v-else
       :name="name"
       :id="name"
-      class="relative outline-none rounded-md w-full bg-zinc-50 focus:bg-zinc-200 p-2 pl-4 peer/input hover:bg-zinc-100 min-h-[4em] max-h-32"
+      class="relative outline-none rounded-md w-full p-2 pl-4 peer/input text-left bg-zinc-50 dark:bg-stone-900 focus:bg-zinc-200 dark:focus:bg-stone-700 hover:bg-zinc-100 dark:hover:bg-stone-600"
       v-model="value"
     ></textarea>
     <label :for="name"

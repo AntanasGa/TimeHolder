@@ -1,6 +1,6 @@
 <template>
   <Modal :onCancel="onCancel">
-    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white p-2 gap-2">
+    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2">
         <div v-if="isWorking" class="absolute loadbar h-1 top-0 left-0 right-0 rounded-full"></div>
         <h1 class="font-bold text-2xl mb-2">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
         <div class="flex flex-col gap-4 mb-4">
@@ -22,8 +22,8 @@
             <StyledButton :class="[
               'col flex-1',
               isDirty()
-                ? 'text-white bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-700'
-                : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active-bg-zinc-200',
+                ? 'text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700'
+                : 'text-inherit bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-700 active:bg-zinc-200 dark:active:bg-stone-600',
               ].join(' ')"
               :disabled="!isDirty()"
               @click="() => isDirty() && toInitial()"
@@ -31,8 +31,8 @@
             <StyledButton :class="[
               'col flex-1',
               isDirty()
-                ? 'text-white bg-red-400 hover:bg-red-500 active:bg-red-600'
-                : 'text-inherit bg-zinc-50 hover:bg-zinc-100 active:bg-zinc-200',
+                ? 'text-white bg-red-400 hover:bg-red-500 active:bg-red-600 dark:bg-red-800 dark:hover:bg-red-600 dark:active:bg-red-700'
+                : 'text-inherit bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-700 active:bg-zinc-200 dark:active:bg-stone-600',
               ].join(' ')"
               :disabled="!isDirty()"
               @click="() => isDirty() && onSave()"
