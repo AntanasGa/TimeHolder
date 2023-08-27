@@ -8,15 +8,17 @@
       @click="(e: MouseEvent) => (active = true, onInputClick(e))"
       @focusin="(e: FocusEvent) => ((e.target as HTMLInputElement).click())"
     />
-    <template v-if="active">
-      <div class="absolute left-0 right-0 top-full z-10 max-h-48 rounded-md drop-shadow-md backdrop-blur-sm bg-white/90 p-1 overflow-y-auto">
-        <template v-if="Object.keys(activeSelection || {}).length" >
-          <StyledInput modelValue="None" :key="-1" type="button" @click="(_: MouseEvent) => (mv = -1, onFocusOut())" />
-          <StyledInput v-for="(v, k) in activeSelection" :modelValue="v" :key="k" type="button" @click="(_: MouseEvent) => (mv = k, onFocusOut())" />
-        </template>
-        <p v-else >No items present</p>
-      </div>
-    </template>
+    <Transition name="option-activity">
+      <template v-if="active">
+        <div class="absolute left-0 right-0 top-full z-10 max-h-48 rounded-md drop-shadow-md backdrop-blur-sm bg-white/90 dark:bg-stone-800 p-1 overflow-y-auto">
+          <template v-if="Object.keys(activeSelection || {}).length" >
+            <StyledInput modelValue="None" :key="-1" type="button" @click="(_: MouseEvent) => (mv = -1, onFocusOut())" />
+            <StyledInput v-for="(v, k) in activeSelection" :modelValue="v" :key="k" type="button" @click="(_: MouseEvent) => (mv = k, onFocusOut())" />
+          </template>
+          <p v-else >No items present</p>
+        </div>
+      </template>
+    </Transition>
   </div>
 </template>
 <script setup lang="ts">
@@ -73,3 +75,14 @@ const mv = computed({
   }
 })
 </script>
+<style>
+.option-activity-leave-active,
+.option-activity-enter-active {
+  transition: all 0.10s ease-in;
+}
+.option-activity-leave-to,
+.option-activity-enter-from {
+  opacity: 0;
+  transform: translateY(-2em) scaleY(0.5);
+}
+</style>
