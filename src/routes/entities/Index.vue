@@ -27,21 +27,39 @@
           title="Task"
           :selection="cache.task?.map(x => x.taskName)"
           :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
-          @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1" />
-          <div class="flex flex-nowrap w-full justify-around gap-2">
-            <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
-            <StyledInput type="time" title="Start time" class="w-full" name="FilterStartDateTime" v-model="startDateTime" keepUp />
-            <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
-          </div>
-          <div class="flex flex-nowrap w-full justify-around gap-2">
-            <StyledInput type="date" title="End Date" class="w-full" name="FilterEndDateDate" v-model="endDateDate" keepUp />
-            <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
-            <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
-          </div>
-          <div class="flex gap-2">
-            <input type="checkbox" id="groupTasksSelector" v-model="groupBy" @change="() => router.replace({ query: getQuery() })">
-            <label for="groupTasksSelector">Group by task</label>
-          </div>
+          @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1"
+        />
+        <div class="flex flex-nowrap w-full justify-around gap-2">
+          <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
+          <StyledInput type="time" title="Start time" class="w-full" name="FilterStartDateTime" v-model="startDateTime" keepUp />
+          <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+        </div>
+        <div class="flex flex-nowrap w-full justify-around gap-2">
+          <StyledInput type="date" title="End Date" class="w-full" name="FilterEndDateDate" v-model="endDateDate" keepUp />
+          <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
+          <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+        </div>
+        <div class="flex gap-2">
+          <StyledButton class="flex gap-2 items-center"
+            @click="onToday"
+          >
+            <CalendarIcon class="w-8 h-8" />
+            Today
+          </StyledButton>
+          <Transition name="reset-activity">
+            <StyledButton v-if="startDate || endDate"
+              class="flex gap-2 items-center"
+              @click="() => (startDate = undefined, endDate = undefined, router.replace({ query: getQuery()}))"
+            >
+              <ArrowPathIcon class="w-8 h-8" />
+              Reset
+            </StyledButton>
+          </Transition>
+        </div>
+        <div class="flex gap-2">
+          <input type="checkbox" id="groupTasksSelector" v-model="groupBy" @change="() => router.replace({ query: getQuery() })">
+          <label for="groupTasksSelector">Group by task</label>
+        </div>
       </div>
     </div>
     </div>
@@ -88,13 +106,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ChevronDownIcon, PencilIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, CalendarIcon, ChevronDownIcon, PencilIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import SearchableSelect from '@/components/formFunctions/SearchableSelect.vue';
 import StyledInput from '@/components/formFunctions/StyledInput.vue';
-import { useDateInputs } from '@/util/DateInputs';
+import { clearSeconds, convertToUtc, useDateInputs } from '@/util/DateInputs';
 
 const dateFormat = new Intl.DateTimeFormat(navigator.language, { timeZone: "UTC", year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 const difFormat = new Intl.DateTimeFormat('en-GB', { timeZone: "UTC", hour: 'numeric', minute: '2-digit'});
@@ -126,6 +144,23 @@ const [endDateDate, endDateTime] = useDateInputs(endDate, false, () => router.re
 const [startDateDate, startDateTime] = useDateInputs(startDate, false, () => router.replace({ query: getQuery() }));
 
 
+
+const onToday = () => {
+  let currDate = new Date();
+  clearSeconds(currDate);
+  currDate.setHours(0);
+  currDate.setMinutes(0);
+  convertToUtc(currDate);
+  startDate.value = currDate.valueOf();
+  currDate = new Date();
+  clearSeconds(currDate);
+  currDate.setHours(23);
+  currDate.setMinutes(59);
+  convertToUtc(currDate);
+  endDate.value = currDate.valueOf();
+  router.replace({ query: getQuery() });
+};
+
 const entities = computed(() => {
   let filtered = cache.entitesWithTasks?.filter(x => (selectedTask.value === -1 || x.taskId === selectedTask.value)
   && (!startDate.value || startDate.value <= x.startTime)
@@ -137,3 +172,15 @@ const entities = computed(() => {
   return Object.values(filtered?.reduce((acc, { taskId, endTime, startTime, task}) => ({ ...acc, [taskId]: { id: taskId, startTime: 0, endTime: (acc[taskId]?.endTime ?? 0) + (endTime ? endTime - startTime : 0 ), task, taskId  } }), {} as Record<string, typeof filtered[0]>) ?? {});
 });
 </script>
+<style>
+.reset-activity-leave-active,
+.reset-activity-enter-active {
+  transition: all 0.10s ease-in;
+}
+
+.reset-activity-leave-to,
+.reset-activity-enter-from {
+  opacity: 0;
+  transform: translateX(-2em);
+}
+</style>
