@@ -28,6 +28,7 @@
           :selection="cache.task?.map(x => x.taskName)"
           :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
           @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1"
+          class="mb-4"
         />
         <div class="flex flex-nowrap w-full justify-around gap-2">
           <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
@@ -39,7 +40,7 @@
           <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
           <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
         </div>
-        <div class="flex gap-2">
+        <div class="flex gap-2 mb-4">
           <StyledButton class="flex gap-2 items-center"
             @click="onToday"
           >
