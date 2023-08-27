@@ -91,8 +91,25 @@
           <td colspan="7" class="text-2xl text-center">No entities present</td>
         </tr>
         <tr v-else v-for="entity in entities" :key="entity.id">
-          <td>{{ entity.id }}</td>
-          <td>{{ entity.task.taskName }}</td>
+          <td>
+            <div class="flex">
+              <span>{{ entity.id }}</span>
+              <RouterLink class="ml-2 w-5 opacity-100"
+              :to="{name: 'Task', params: { id: entity.taskId }}"
+                :href="entity.task.taskLink"
+              ><LinkIcon class="w-5 h-5" /></RouterLink>
+            </div>
+          </td>
+          <td class="inline">
+            <div class="flex">
+              <span>{{ entity.task.taskName }}</span>
+              <a class="ml-2 w-5 opacity-100"
+                :href="entity.task.taskLink"
+                rel="noopener noreferrer"
+                target="_blank"
+              ><LinkIcon class="w-5 h-5" /></a>
+            </div>
+          </td>
           <td>{{ entity.comment }}</td>
           <td>{{  !groupBy ? dateFormat.format(new Date(entity.startTime)) : "-" }}</td>
           <td>{{ (!groupBy && entity.endTime && dateFormat.format(new Date(entity.endTime))) || "-" }}</td>
@@ -107,9 +124,9 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ArrowPathIcon, CalendarIcon, ChevronDownIcon, PencilIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, CalendarIcon, ChevronDownIcon, LinkIcon, PencilIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/solid';
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
-import { useRoute, useRouter } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import SearchableSelect from '@/components/formFunctions/SearchableSelect.vue';
 import StyledInput from '@/components/formFunctions/StyledInput.vue';
