@@ -96,7 +96,6 @@
               <span>{{ entity.id }}</span>
               <RouterLink class="ml-2 w-5 opacity-100"
               :to="{name: 'Task', params: { id: entity.taskId }}"
-                :href="entity.task.taskLink"
               ><LinkIcon class="w-5 h-5" /></RouterLink>
             </div>
           </td>
