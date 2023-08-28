@@ -1,4 +1,5 @@
 <template>
+  <div class="w-full h-12">
   <div class="fixed bottom-4 left-2/4 -translate-x-2/4">
     <nav class="rounded-md drop-shadow-md backdrop-blur-sm bg-white/50 dark:bg-white/10">
       <ul class="flex gap-4">
@@ -19,6 +20,7 @@
         </NavigationLink>
       </ul>
     </nav>
+  </div>
   </div>
 </template>
 

@@ -5,7 +5,7 @@
       <div class="relative top-0 inset-x-0 h-1 mb-1">
         <div v-if="busy" class="w-full h-full loadbar"></div>
       </div>
-      <main class="mb-28">
+      <main class="mb-28 min-h-full">
       <RouterView />
       </main>
       <Navigation />
