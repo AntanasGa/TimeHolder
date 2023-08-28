@@ -7,7 +7,7 @@
   <section class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-5">
     <div class="rounded-md drop-shadow-md backdrop-blur-sm w-full flex flex-col gap-2 p-2 items-center transition-all">
       <h2 class="font-bold text-3xl">Theme</h2>
-      <ThemeSelector />
+      <ThemeSelector class="mt-auto" />
     </div>
     <div class="rounded-md drop-shadow-md backdrop-blur-sm w-full flex flex-col gap-2 p-2 items-center group transition-all">
       <h2 class="font-bold text-3xl">Import</h2>
@@ -23,7 +23,7 @@
     </div>
     <div class="rounded-md drop-shadow-md backdrop-blur-sm w-full flex flex-col gap-2 p-2 items-center group transition-all">
       <h2 class="font-bold text-3xl">Export</h2>
-      <div>
+      <div class="mt-auto">
         <StyledButton title="Export data to local file" class="bg-zinc-100 dark:bg-stone-800 hover:bg-zinc-200 dark:hover:bg-stone-700" @click="() => exportData()">
           <ArrowDownTrayIcon class="w-16 h-16" />
         </StyledButton>
