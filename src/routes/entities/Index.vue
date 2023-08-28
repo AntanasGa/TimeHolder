@@ -33,12 +33,26 @@
         <div class="flex flex-nowrap w-full justify-around gap-2">
           <StyledInput type="date" title="Start date" class="w-full" name="FilterStartDateDate" v-model="startDateDate" keepUp />
           <StyledInput type="time" title="Start time" class="w-full" name="FilterStartDateTime" v-model="startDateTime" keepUp />
-          <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+          <Transition name="reset-time">
+            <StyledButton v-if="startDate"
+              class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600 w-12"
+              @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"
+            >
+              <XMarkIcon class="w-8 h-8" />
+            </StyledButton>
+          </Transition>
         </div>
         <div class="flex flex-nowrap w-full justify-around gap-2">
           <StyledInput type="date" title="End Date" class="w-full" name="FilterEndDateDate" v-model="endDateDate" keepUp />
           <StyledInput type="time" title="End Date" class="w-full" name="FilterEndDateTime" v-model="endDateTime" keepUp />
-          <StyledButton class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600" @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"><XMarkIcon class="w-8 h-8" /></StyledButton>
+          <Transition name="reset-time">
+            <StyledButton v-if="endDate"
+              class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600 w-12"
+              @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"
+            >
+              <XMarkIcon class="w-8 h-8" />
+            </StyledButton>
+          </Transition>
         </div>
         <div class="flex gap-2 mb-4">
           <StyledButton class="flex gap-2 items-center"
@@ -199,5 +213,16 @@ const entities = computed(() => {
 .reset-activity-enter-from {
   opacity: 0;
   transform: translateX(-2em);
+}
+
+.reset-time-leave-active,
+.reset-time-enter-active {
+  transition: all 0.1s ease-in;
+}
+
+.reset-time-leave-to,
+.reset-time-enter-from {
+  transform: translateX(2em);
+  opacity: 0;
 }
 </style>
