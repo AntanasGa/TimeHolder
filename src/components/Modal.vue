@@ -9,7 +9,28 @@
 </template>
 
 <script setup lang="ts">
+import { useModalQueStore } from '@/stores/ModalCueStore';
 import { XMarkIcon } from '@heroicons/vue/24/solid';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{onCancel: () => void}>();
+const modalQue = useModalQueStore();
+const itemId = ref(modalQue.generate);
+modalQue.push(itemId.value);
+
+function keyboardCancel(e: KeyboardEvent) {
+  if (e.key !== "Escape" || e.shiftKey || e.ctrlKey || !modalQue.isCurrent(itemId.value)) {
+    return;
+  }
+  props.onCancel();
+} 
+
+onMounted(() => {
+  window.addEventListener("keyup", keyboardCancel)
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keyup", keyboardCancel);
+  modalQue.yank(itemId.value);
+});
 </script>
