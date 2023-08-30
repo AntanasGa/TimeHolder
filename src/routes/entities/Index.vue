@@ -194,13 +194,25 @@ const onToday = () => {
 
 const entities = computed(() => {
   let filtered = cache.entitesWithTasks?.filter(x => (selectedTask.value === -1 || x.taskId === selectedTask.value)
-  && (!startDate.value || startDate.value <= x.startTime)
-  && (!endDate.value || endDate.value > (x.endTime ?? endDate.value))
+    && (!startDate.value || startDate.value <= x.startTime)
+    && (!endDate.value || endDate.value > (x.endTime ?? endDate.value))
   )
   if (!groupBy.value) {
-    return filtered;
+    return filtered?.sort((a, b) => b.id - a.id);
   }
-  return Object.values(filtered?.reduce((acc, { taskId, endTime, startTime, task}) => ({ ...acc, [taskId]: { id: taskId, startTime: 0, endTime: (acc[taskId]?.endTime ?? 0) + (endTime ? endTime - startTime : 0 ), task, taskId  } }), {} as Record<string, typeof filtered[0]>) ?? {});
+  type ArrayPicker<T> = T extends (infer U)[] ? U : never;
+  type filteredEntry = typeof filtered;
+  let resolved: Record<string, ArrayPicker<filteredEntry>> = {};
+  return Object.values(filtered?.reduce((acc, { taskId, endTime, startTime, task}) => ({
+        ...acc,
+        [taskId]: {
+          id: taskId,
+          startTime: 0,
+          endTime: (acc[taskId]?.endTime ?? 0) + (endTime ? endTime - startTime : 0 ),
+          task,
+          taskId
+        }
+  }), resolved) ?? {});
 });
 </script>
 <style>
