@@ -77,7 +77,7 @@ const task = {
         return;
       }
       
-      items.task = items.task.splice(index, 1);
+      items.task.splice(index, 1);
     }).catch((e: IDBRequest | Error) => {
       let message = e instanceof Error ? e.message : (e.error?.message || "");
 
@@ -150,7 +150,7 @@ const entity = {
         return;
       }
       
-      items.entity = items.entity.splice(index, 1);
+      items.entity.splice(index, 1);
     }).catch((e: IDBRequest | Error) => {
       let message = e instanceof Error ? e.message : (e.error?.message || "");
 
