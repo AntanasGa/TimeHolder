@@ -131,7 +131,7 @@ const initializeForm = (entityItem: newOrExistingEntity) => {
   const startd = 'id' in entity ? new Date(entity.startTime.value) : new Date();
   clearSeconds(startd);
   form.values.startTime.value = startd.valueOf();
-  [startDateDate, startDateTime] = useDateInputs(entity.startTime);
+  [startDateDate, startDateTime] = useDateInputs(entity.startTime, !('id' in entity));
 
   const endd = 'id' in entity && entity.endTime?.value ? new Date(entity.endTime.value) : undefined;
   endd && clearSeconds(endd);
@@ -149,7 +149,6 @@ function confirmProceed() {
 
 function onSave() {
   if (!entity || entity.taskId.value == -1) {
-    
     return;
   }
   isWorking.value = true;

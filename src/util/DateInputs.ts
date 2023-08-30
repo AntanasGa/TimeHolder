@@ -23,7 +23,7 @@ export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean 
       if (!setDefault && !ref.value) {
         return '';
       }
-      var date = new Date(ref.value ?? getUtcNow());
+      var date = new Date(setDefault ? getUtcNow() : (ref.value ?? getUtcNow()));
       return `${(date.getUTCHours() + "").padStart(2, "0")}:${(date.getUTCMinutes()+ "").padStart(2, "0")}`;
     },
     set(value) {
@@ -44,7 +44,7 @@ export const useDateInputs = (ref: Ref<number | undefined>, setDefault: boolean 
       if (!setDefault && !ref.value) {
         return '';
       }
-      const date = new Date(ref.value ?? getUtcNow());
+      const date = new Date(setDefault ? getUtcNow() : (ref.value ?? getUtcNow()));
       return `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1 + "").padStart(2, "0")}-${(date.getUTCDate() + "").padStart(2, "0")}`;
     },
     set(value) {
