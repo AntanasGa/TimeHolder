@@ -1,14 +1,14 @@
 <template>
   <Modal :onCancel="onCancel">
-    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2">
+    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2 max-w-[18rem]">
         <div v-if="isWorking" class="absolute loadbar h-1 top-0 left-0 right-0 rounded-full"></div>
-        <h1 class="font-bold text-2xl mb-2">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
+        <h1 class="font-bold text-2xl mb-2 text-ellipsis overflow-hidden max-w-xs whitespace-nowrap">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
         <div class="flex flex-col gap-4 mb-4">
-          <StyledInput v-model="task.taskName.value" :name="'taskName'" :title="'Task name'" />
+          <StyledInput v-model="task.taskName.value" :name="'taskName'" :title="'Task name'" className="text-ellipsis" />
           <div class="flex gap-2 items-center">
-            <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" />
+            <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" class="grow w-full" className="text-ellipsis" />
             <a :class="[
-              'p-2 transition-all',
+              'p-2 transition-all shrink',
               id === -1
                 ? 'absolute w-0 opacity-0 pointer-events-none'
                 : 'static w-9 opacity-100',

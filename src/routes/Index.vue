@@ -10,11 +10,11 @@
         <PlusIcon class="w-16 h-16 text-white"/>
     </RouterLink>
     <div v-for="item in taskList" :key="item.id" class="rounded-md drop-shadow-md backdrop-blur-sm w-full dark:bg-stone-900 flex justify-between p-2 items-center group border-red-500 border-l-0 hover:border-l-8 transition-all">
-      <div class="flex flex-col gap-4">
-        <h2 class="font-bold text-3xl">{{ item.taskName }}</h2>
+      <div class="flex flex-col gap-4 shrink overflow-hidden">
+        <h2 class="font-bold text-3xl whitespace-nowrap overflow-hidden text-ellipsis">{{ item.taskName }}</h2>
         <a :href="item.taskLink" class="flex gap-1">To task <LinkIcon class="w-3 h-3" /></a>
       </div>
-      <RouterLink :to="{ name: 'Task', params: { id: item.id } }" class="rounded-full bg-black dark:bg-stone-700 w-16 h-16 mr-2 group-hover:mr-0 group-hover:bg-stone-800 transition-all">
+      <RouterLink :to="{ name: 'Task', params: { id: item.id } }" class="rounded-full bg-black dark:bg-stone-700 w-16 h-16 mr-2 group-hover:mr-0 group-hover:bg-stone-800 transition-all shrink-0">
         <ArrowRightIcon class="w-full h-full text-white dark:text-black group-hover:text-red-500 transition-all" />
       </RouterLink>
     </div>
