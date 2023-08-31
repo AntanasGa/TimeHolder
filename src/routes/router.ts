@@ -2,12 +2,14 @@ import { createRouter, createWebHistory, NavigationGuardWithThis, RouteLocationN
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
 import { useIndexedDbStore } from '@/stores/IndexedDbStore';
-import Err404 from '@/routes/error/Err404.vue';
-import Index from '@/routes/Index.vue';
-import Task from '@/routes/Task.vue';
-import EntryIndex from '@/routes/entities/Index.vue';
-import Entity from '@/routes/entities/Entity.vue';
-import Settings from '@/routes/Settings.vue';
+
+// lazyloading
+const Err404 = () => import('@/routes/error/Err404.vue');
+const Index = () => import('@/routes/Index.vue');
+const Task = () => import ('@/routes/Task.vue');
+const EntryIndex = () => import('@/routes/entities/Index.vue');
+const Entity = () => import('@/routes/entities/Entity.vue');
+const Settings = () => import('@/routes/Settings.vue');
 
 const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWithThis<undefined>> => {
   return {
