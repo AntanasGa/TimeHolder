@@ -24,6 +24,6 @@
 import { RouterView } from 'vue-router';
 import DatabaseContext from '@/components/DatabaseContext.vue';
 import Navigation from '@/components/Navigation.vue';
-import { NoSymbolIcon } from '@heroicons/vue/24/solid';
+import { NoSymbolIcon } from '@/components/Icons/index';
 import ToastBar from './components/ToastBar.vue';
 </script>

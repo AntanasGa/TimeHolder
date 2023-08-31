@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
-import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/vue/24/solid';
+import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@/components/Icons/index';
 import { onUnmounted, ref, watch } from 'vue';
 
 function setTheme(update: Exclude<typeof theme["value"], 'device'> | undefined) {

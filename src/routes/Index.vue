@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { useDBCacheStore } from '@/stores/DBCacheStore';
-import { ArrowRightIcon, LinkIcon, PlusIcon } from '@heroicons/vue/24/solid';
+import { ArrowRightIcon, LinkIcon, PlusIcon } from '@/components/Icons/index';
 import { onUnmounted, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 

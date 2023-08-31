@@ -23,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue';
-import StyledInput from './StyledInput.vue';
+import { StyledInput } from '.';
 
 const props = defineProps<{modelValue?: number, selection?: string[], title?: string, name?: string, className?: string}>();
 const stopWatcher = watch(() => props.modelValue, () => requestAnimationFrame(() => value.value = props.selection?.[mv.value ?? -1] ?? ""));

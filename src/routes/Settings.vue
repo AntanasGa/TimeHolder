@@ -37,7 +37,7 @@ import ThemeSelector from '@/components/ThemeSelector.vue';
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { useIndexedDbStore } from '@/stores/IndexedDbStore';
-import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@heroicons/vue/24/solid';
+import { ArrowDownTrayIcon, ArrowUpTrayIcon } from '@/components/Icons/index';
 import { inject, ref } from 'vue';
 import { CacheTypes } from '@/stores/documents';
 import { DBContext } from '@/components/DatabaseContext.vue';

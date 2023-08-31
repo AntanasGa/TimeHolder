@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { useModalQueStore } from '@/stores/ModalCueStore';
-import { XMarkIcon } from '@heroicons/vue/24/solid';
+import { XMarkIcon } from '@/components/Icons/index';
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{onCancel: () => void}>();

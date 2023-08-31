@@ -137,12 +137,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { ArrowPathIcon, CalendarIcon, ChevronDownIcon, LinkIcon, PencilIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/solid';
+import { ArrowPathIcon, CalendarIcon, ChevronDownIcon, LinkIcon, PencilIcon, PlusIcon, XMarkIcon } from '@/components/Icons/index';
 import StyledButton from '@/components/formFunctions/StyledButton.vue';
 import { RouterLink, useRoute, useRouter } from 'vue-router';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
-import SearchableSelect from '@/components/formFunctions/SearchableSelect.vue';
-import StyledInput from '@/components/formFunctions/StyledInput.vue';
+import { SearchableSelect, StyledInput } from '@/components/formFunctions/index';
 import { clearSeconds, convertToUtc, useDateInputs } from '@/util/DateInputs';
 
 const dateFormat = new Intl.DateTimeFormat(navigator.language, { timeZone: "UTC", year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'});

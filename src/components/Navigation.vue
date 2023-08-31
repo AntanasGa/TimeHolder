@@ -25,6 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { ListBulletIcon, RectangleStackIcon, Cog6ToothIcon } from '@heroicons/vue/24/solid';
+import { ListBulletIcon, RectangleStackIcon, Cog6ToothIcon } from '@/components/Icons/index';
 import NavigationLink from './navigation/NavigationLink.vue';
 </script>

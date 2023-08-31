@@ -80,14 +80,12 @@
 <script setup lang="ts">
 import { DBContext } from '@/components/DatabaseContext.vue';
 import Modal from '@/components/Modal.vue'
-import SearchableSelect from '@/components/formFunctions/SearchableSelect.vue';
-import StyledButton from '@/components/formFunctions/StyledButton.vue';
-import StyledInput from '@/components/formFunctions/StyledInput.vue';
+import { SearchableSelect, StyledButton, StyledInput } from '@/components/formFunctions/index';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, IndexedItem } from '@/stores/documents';
 import { clearSeconds, useDateInputs } from '@/util/DateInputs';
 import { FormResponse, RefObject, useForm } from '@/util/Form';
-import { LinkIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { LinkIcon, TrashIcon } from '@/components/Icons/index';
 import { WritableComputedRef, inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

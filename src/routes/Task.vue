@@ -50,12 +50,11 @@
 <script setup lang="ts">
 import { DBContext } from '@/components/DatabaseContext.vue';
 import Modal from '@/components/Modal.vue';
-import StyledButton from '@/components/formFunctions/StyledButton.vue';
-import StyledInput from '@/components/formFunctions/StyledInput.vue';
+import { StyledButton, StyledInput } from '@/components/formFunctions/index';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexedItem } from '@/stores/documents';
 import { useForm, FormResponse, RefObject } from '@/util/Form';
-import { LinkIcon } from '@heroicons/vue/24/solid';
+import { LinkIcon } from '@/components/Icons/index';
 import { inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 

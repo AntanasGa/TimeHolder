@@ -32,7 +32,7 @@
 import { IToast, ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
 import { onUnmounted, ref } from 'vue';
 import { numberId } from '@/util/Id'
-import { XMarkIcon } from '@heroicons/vue/24/solid';
+import { XMarkIcon } from '@/components/Icons/index';
 
 const toasts = useMessagingStore();
 

@@ -11,4 +11,21 @@ export default defineConfig({
       '@': path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('.css')) {
+            return 'index';
+          }
+          if (id.includes('src/components/formFunctions')) {
+            return 'formComponents';
+          }
+          if (id.includes('src/components/Icons')) {
+            return 'icons';
+          }
+        }
+      }
+    }
+  }
 })

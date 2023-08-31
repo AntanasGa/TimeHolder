@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { AtSymbolIcon, Cog6ToothIcon, CogIcon, CubeIcon, CubeTransparentIcon } from '@heroicons/vue/24/solid';
+import { AtSymbolIcon, Cog6ToothIcon, CogIcon, CubeIcon, CubeTransparentIcon } from '@/components/Icons/index';
 import { onMounted, ref } from 'vue';
 
 const didMount = ref(false);
