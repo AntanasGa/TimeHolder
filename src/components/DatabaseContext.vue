@@ -1,5 +1,5 @@
 <template>
-  <slot :busy="db.busy" :accessable="!db.denyAccess"></slot>
+  <slot :busy="db.busy || toasts.loading" :accessable="!db.denyAccess"></slot>
 </template>
 
 <script setup lang="ts">

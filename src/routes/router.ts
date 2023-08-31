@@ -2,14 +2,22 @@ import { createRouter, createWebHistory, NavigationGuardWithThis, RouteLocationN
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
 import { useIndexedDbStore } from '@/stores/IndexedDbStore';
+import { Component, defineAsyncComponent } from 'vue';
+import LoaderBlank from '@/components/LoaderBlank.vue';
+
+const loadComponent = async <T extends Component>(fn: () => Promise<T>) => 
+await defineAsyncComponent({
+  loader: () => fn(),
+  loadingComponent: LoaderBlank
+})
 
 // lazyloading
-const Err404 = () => import('@/routes/error/Err404.vue');
-const Index = () => import('@/routes/Index.vue');
-const Task = () => import ('@/routes/Task.vue');
-const EntryIndex = () => import('@/routes/entities/Index.vue');
-const Entity = () => import('@/routes/entities/Entity.vue');
-const Settings = () => import('@/routes/Settings.vue');
+const Err404 = () => loadComponent(() => import('@/routes/error/Err404.vue'));
+const Index = () => loadComponent(() => import('@/routes/Index.vue'));
+const Task = () => loadComponent(() => import('@/routes/Task.vue'));
+const EntryIndex = () => loadComponent(() => import('@/routes/entities/Index.vue'));
+const Entity = () => loadComponent(() => import('@/routes/entities/Entity.vue'));
+const Settings = () => loadComponent(() => import('@/routes/Settings.vue'));
 
 const generate404 = (to: RouteLocationNormalized): ReturnType<NavigationGuardWithThis<undefined>> => {
   return {

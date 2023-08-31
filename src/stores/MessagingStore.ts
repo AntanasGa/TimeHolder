@@ -15,10 +15,11 @@ export enum ToastStatus {
 }
 
 export const useMessagingStore = defineStore('toastStore', {
-  state(): { toasts: IToast[], subs: (() => void)[] } {
+  state(): { toasts: IToast[], subs: (() => void)[], loading: boolean } {
     return {
       toasts: [],
       subs: [],
+      loading: false,
     };
   },
   actions: {
