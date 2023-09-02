@@ -61,12 +61,12 @@
         </div>
     </div>
     <Modal v-if="selectedMenu !== MenuItem.None" :onCancel="(() => (selectedMenu = MenuItem.None))">
-      <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2">
+      <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-8 max-w-[18rem]">
         <h1 class="font-bold text-xl mb-2">
           <template v-if="selectedMenu === MenuItem.Exit">There are unsaved changes, are you sure you want to leave</template>
           <template v-if="selectedMenu === MenuItem.Delete">Are you sure you want to remove this entry</template>
         </h1>
-        <div class="flex gap-2">
+        <div class="flex flex-col gap-2">
           <StyledButton class="col flex-1 text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700"
             @click="() => selectedMenu = MenuItem.None"
           >No</StyledButton>
