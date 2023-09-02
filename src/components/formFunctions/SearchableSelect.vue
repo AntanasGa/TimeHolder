@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full" ref="el">
+  <div class="relative" ref="el">
     <StyledInput
       :title="title"
       :name="name"
@@ -7,6 +7,7 @@
       v-model="value"
       @click="(e: MouseEvent) => (active = true, onInputClick(e))"
       @focusin="(e: FocusEvent) => ((e.target as HTMLInputElement).click())"
+      className="overflow-hidden text-ellipsis"
     />
     <Transition name="option-activity">
       <template v-if="active">

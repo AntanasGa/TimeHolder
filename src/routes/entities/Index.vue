@@ -5,7 +5,7 @@
       <h1 class="font-bold text-6xl grow">Entities</h1>
       <h1 v-if="groupBy" class="font-bold text-6xl shrink">{{ difFormat.format(entities?.reduce((acc, { endTime: et }) => acc += (et ?? 0), 0)) }}</h1>
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-col max-w-[inherit]">
       <div>
         <StyledButton :class="[
             'relative flex items-center gap-1 z-10',
@@ -20,7 +20,7 @@
       </StyledButton>
       </div>
       <div :class="[
-        'flex flex-col w-full bg-stone-100 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-800 dark:to-stone-700 rounded-md transition-all gap-2',
+        'flex flex-col w-inherit bg-stone-100 dark:bg-stone-900 dark:bg-gradient-to-t dark:from-stone-800 dark:to-stone-700 rounded-md transition-all gap-2',
         ...(showFilters ? ['px-4 pt-12 pb-4 h-full -translate-y-10'] : ['h-0 px-4 pt-0 pb-0 -translate-y-100 pointer-events-none opacity-0'])
       ]">
         <SearchableSelect name="TaskIndex"
