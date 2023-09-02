@@ -7,6 +7,7 @@
     type="button"
     @click="(e) => !disabled && emit('click', e)"
     :disabled="disabled"
+    :title="title"
   >
     <slot></slot>
   </button>
