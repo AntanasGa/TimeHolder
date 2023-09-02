@@ -45,3 +45,9 @@ export const useForm = <T extends {}>(initialValues: T): FormResponse<T> => {
   };
   return result;
 };
+
+export enum ModalConfirm {
+  None = 0,
+  Exit = 1,
+  Delete = 2,
+}

@@ -1,11 +1,11 @@
 <template>
-  <Modal :onCancel="() => (isDirty() ? (selectedMenu = MenuItem.Exit) : confirmProceed())">
+  <Modal :onCancel="() => (isDirty() ? (selectedMenu = ModalConfirm.Exit) : confirmProceed())">
     <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2 max-w-[18rem]">
       <div v-if="isWorking" class="absolute loadbar h-1 top-0 left-0 right-0 rounded-full"></div>
       <div class="flex gap-2 justify-between">
         <h1 class="font-bold text-2xl mb-2">{{ id < 0 ? "New entity" : `Edit entity ${entity.taskId.value}` }}</h1>
         <Transition name="slide-in-right">
-          <StyledButton v-if="id > -1" @click="() => selectedMenu = MenuItem.Delete">
+          <StyledButton v-if="id > -1" @click="() => selectedMenu = ModalConfirm.Delete">
             <TrashIcon class="w-6 h-6" title="delete entry" />
           </StyledButton>
         </Transition>
@@ -60,15 +60,15 @@
           >Save</StyledButton>
         </div>
     </div>
-    <Modal v-if="selectedMenu !== MenuItem.None" :onCancel="(() => (selectedMenu = MenuItem.None))">
+    <Modal v-if="selectedMenu !== ModalConfirm.None" :onCancel="(() => (selectedMenu = ModalConfirm.None))">
       <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-8 max-w-[18rem]">
         <h1 class="font-bold text-xl mb-2">
-          <template v-if="selectedMenu === MenuItem.Exit">There are unsaved changes, are you sure you want to leave</template>
-          <template v-if="selectedMenu === MenuItem.Delete">Are you sure you want to remove this entry</template>
+          <template v-if="selectedMenu === ModalConfirm.Exit">There are unsaved changes, are you sure you want to leave</template>
+          <template v-if="selectedMenu === ModalConfirm.Delete">Are you sure you want to remove this entry</template>
         </h1>
         <div class="flex flex-col gap-2">
           <StyledButton class="col flex-1 text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700"
-            @click="() => selectedMenu = MenuItem.None"
+            @click="() => selectedMenu = ModalConfirm.None"
           >No</StyledButton>
           <StyledButton class="col flex-1 text-white bg-red-400 hover:bg-red-500 active:bg-red-600 dark:bg-red-800 dark:hover:bg-red-600 dark:active:bg-red-700"
             @click="confirmProceed"
@@ -86,7 +86,7 @@ import { SearchableSelect, StyledButton, StyledInput } from '@/components/formFu
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, IndexedItem } from '@/stores/documents';
 import { clearSeconds, useDateInputs } from '@/util/DateInputs';
-import { FormResponse, RefObject, useForm } from '@/util/Form';
+import { FormResponse, RefObject, useForm, ModalConfirm } from '@/util/Form';
 import { LinkIcon, TrashIcon } from '@/components/Icons/index';
 import { WritableComputedRef, inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -104,13 +104,7 @@ type newOrExistingEntity = IEntity | Omit<IEntity, keyof IndexedItem>
 
 const isWorking = ref(false);
 
-enum MenuItem {
-  None = 0,
-  Exit = 1,
-  Delete = 2,
-}
-
-const selectedMenu = ref<MenuItem>(MenuItem.None);
+const selectedMenu = ref<ModalConfirm>(ModalConfirm.None);
 
 let entity: RefObject<newOrExistingEntity>;
 let isDirty: FormResponse<newOrExistingEntity>["isDirty"];
@@ -140,10 +134,10 @@ const initializeForm = (entityItem: newOrExistingEntity) => {
 }
 
 function confirmProceed() {
-  if (selectedMenu.value === MenuItem.Delete && id.value > -1 && "id" in entity) {
+  if (selectedMenu.value === ModalConfirm.Delete && id.value > -1 && "id" in entity) {
     entityActions?.remove(entity.id.value);
   }
-  selectedMenu.value = MenuItem.None;
+  selectedMenu.value = ModalConfirm.None;
   router.push('/entities');
 }
 
