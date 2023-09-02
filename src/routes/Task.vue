@@ -1,5 +1,5 @@
 <template>
-  <Modal :onCancel="onCancel">
+  <Modal :onCancel="() => isDirty() ? (selectedMenu = ModalConfirm.Exit) : confirmProceed()">
     <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-2 max-w-[18rem]">
         <div v-if="isWorking" class="absolute loadbar h-1 top-0 left-0 right-0 rounded-full"></div>
         <h1 class="font-bold text-2xl mb-2 text-ellipsis overflow-hidden max-w-xs whitespace-nowrap">{{ id < 0 ? "New task" : `Edit task ${task.taskName.value}` }}</h1>
@@ -44,6 +44,22 @@
           <RouterLink class="flex gap-1" :to="{name: 'NewEntity', query: { taskId: id } }">Register Time <LinkIcon class="w-3 h-3" /></RouterLink>
         </div>
       </div>
+      <Modal v-if="selectedMenu !== ModalConfirm.None" :onCancel="(() => (selectedMenu = ModalConfirm.None))">
+      <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-8 max-w-[18rem]">
+        <h1 class="font-bold text-xl mb-2">
+          <template v-if="selectedMenu === ModalConfirm.Exit">There are unsaved changes, are you sure you want to leave</template>
+          <template v-if="selectedMenu === ModalConfirm.Delete">Are you sure you want to remove this entry</template>
+        </h1>
+        <div class="flex flex-col gap-2">
+          <StyledButton class="col flex-1 text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700"
+            @click="() => selectedMenu = ModalConfirm.None"
+          >No</StyledButton>
+          <StyledButton class="col flex-1 text-white bg-red-400 hover:bg-red-500 active:bg-red-600 dark:bg-red-800 dark:hover:bg-red-600 dark:active:bg-red-700"
+            @click="confirmProceed"
+          >Yes</StyledButton>
+        </div>
+      </div>
+    </Modal>
   </Modal>
 </template>
 
@@ -53,7 +69,7 @@ import Modal from '@/components/Modal.vue';
 import { StyledButton, StyledInput } from '@/components/formFunctions/index';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexedItem } from '@/stores/documents';
-import { useForm, FormResponse, RefObject } from '@/util/Form';
+import { useForm, FormResponse, RefObject, ModalConfirm } from '@/util/Form';
 import { LinkIcon } from '@/components/Icons/index';
 import { inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -72,6 +88,7 @@ let reset: FormResponse<newOrExistingTask>["reset"];
 let toInitial: FormResponse<newOrExistingTask>["toInitial"];
 
 const entries = ref<IEntity[]>();
+const selectedMenu = ref<ModalConfirm>(ModalConfirm.None);
 
 const isWorking = ref(false);
 
@@ -85,15 +102,10 @@ const initializeForm = (taskItem: newOrExistingTask) => {
   toInitial = form.toInitial;
 }
 
-function onCancel() {
-  const confirm = isDirty() ? window.confirm("There are unsaved changes, are you sure you want to leave") : true;
-  if (!confirm) {
-    return;
-  }
-  router.push('/tasks');  
+function confirmProceed() {
+  selectedMenu.value = ModalConfirm.None;
+  router.push('/tasks');
 }
-
-
 
 function onSave() {
   isWorking.value = true;
@@ -126,7 +138,7 @@ if (id.value < 0) {
 } else {
   const tmpTask = cache.task?.find((x) => x.id === id.value);
   if (!tmpTask) {
-    onCancel();
+    confirmProceed();
   } else {
     initializeForm(tmpTask);
     entries.value = cache.entity?.filter(x => x.taskId === id.value);
