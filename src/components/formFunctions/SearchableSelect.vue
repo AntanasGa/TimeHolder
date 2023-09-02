@@ -8,6 +8,7 @@
       @click="(e: MouseEvent) => (active = true, onInputClick(e))"
       @focusin="(e: FocusEvent) => ((e.target as HTMLInputElement).click())"
       className="overflow-hidden text-ellipsis"
+      :keepUp="keepUp"
     />
     <Transition name="option-activity">
       <template v-if="active">
@@ -26,9 +27,9 @@
 import { computed, onUnmounted, ref, watch } from 'vue';
 import { StyledInput } from '.';
 
-const props = defineProps<{modelValue?: number, selection?: string[], title?: string, name?: string, className?: string}>();
+const props = defineProps<{modelValue?: number, defaultValue?: string, keepUp?: boolean, selection?: string[], title?: string, name?: string, className?: string}>();
 const stopWatcher = watch(() => props.modelValue, () => requestAnimationFrame(() => value.value = props.selection?.[mv.value ?? -1] ?? ""));
-const value = ref(("" + (props.selection?.[props.modelValue ?? -1] ?? "")) ?? "");
+const value = ref(("" + (props.selection?.[props.modelValue ?? -1] ?? props.defaultValue ?? "")) ?? "");
 const el = ref<HTMLDivElement>();
 const innerMv = ref(props.modelValue ?? -1);
 
@@ -36,6 +37,7 @@ function onInputClick(e: MouseEvent | FocusEvent) {
   (e.target as HTMLInputElement).focus();
   window.addEventListener("click", onFocusOut);
   window.addEventListener("focusin", onFocusOut);
+  value.value = "";
 }
 
 function onFocusOut(e?: MouseEvent | FocusEvent) {
@@ -46,7 +48,7 @@ function onFocusOut(e?: MouseEvent | FocusEvent) {
   if (!target || !el.value.contains(target)) {
     active.value = false;
     // eliminates ghosing \/
-    requestAnimationFrame(() => value.value = props.selection?.[mv.value ?? -1] ?? "");
+    requestAnimationFrame(() => value.value = props.selection?.[mv.value ?? -1] ?? props.defaultValue ?? "");
     window.removeEventListener("click", onFocusOut);
     window.removeEventListener("focusin", onFocusOut);
   }

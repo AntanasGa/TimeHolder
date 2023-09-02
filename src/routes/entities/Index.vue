@@ -15,7 +15,7 @@
           ].join(' ')"
           @click="() => showFilters = !showFilters"
         >
-        <h3 class="font-bold text-lg">Filters</h3>
+        <h2 class="font-bold text-lg">Filters</h2>
         <ChevronDownIcon :class="['w-4 h-4 transition-all', showFilters ? 'scale-y-100' : '-scale-y-100']" />
       </StyledButton>
       </div>
@@ -25,6 +25,7 @@
       ]">
         <SearchableSelect name="TaskIndex"
           title="Task"
+          default-value="No task selected"
           :selection="cache.task?.map(x => x.taskName)"
           :modelValue="cache.task?.findIndex((x) => x.id === selectedTask) ?? -1"
           @update:modelValue="(v) => selectedTask = cache.task?.[v ?? -1]?.id ?? -1"
@@ -37,6 +38,7 @@
             <StyledButton v-if="startDate"
               class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600 w-12"
               @click="() => (startDate = undefined, router.replace({ query: getQuery() }))"
+              title="Remove start date filter"
             >
               <XMarkIcon class="w-8 h-8" />
             </StyledButton>
@@ -49,6 +51,7 @@
             <StyledButton v-if="endDate"
               class="bg-zinc-50 dark:bg-stone-900 hover:bg-zinc-100 dark:hover:bg-stone-600 w-12"
               @click="() => (endDate = undefined, router.replace({ query: getQuery() }))"
+              title="Remove end date filter"
             >
               <XMarkIcon class="w-8 h-8" />
             </StyledButton>
@@ -65,6 +68,7 @@
             <StyledButton v-if="startDate || endDate"
               class="flex gap-2 items-center"
               @click="() => (startDate = undefined, endDate = undefined, router.replace({ query: getQuery()}))"
+              title="Reset filters"
             >
               <ArrowPathIcon class="w-8 h-8" />
               Reset
@@ -109,8 +113,11 @@
             <div class="flex">
               <span>{{ entity.id }}</span>
               <RouterLink class="ml-2 w-5 opacity-100"
-              :to="{name: 'Task', params: { id: entity.taskId }}"
-              ><LinkIcon class="w-5 h-5" /></RouterLink>
+                :to="{name: 'Task', params: { id: entity.taskId }}"
+                title="Edit task"
+              >
+                <LinkIcon class="w-5 h-5" />
+              </RouterLink>
             </div>
           </td>
           <td class="inline">
@@ -120,14 +127,21 @@
                 :href="entity.task.taskLink"
                 rel="noopener noreferrer"
                 target="_blank"
-              ><LinkIcon class="w-5 h-5" /></a>
+                title="Go to task (remote)"
+              >
+                <LinkIcon class="w-5 h-5" />
+              </a>
             </div>
           </td>
           <td>{{ entity.comment }}</td>
           <td>{{  !groupBy ? dateFormat.format(new Date(entity.startTime)) : "-" }}</td>
           <td>{{ (!groupBy && entity.endTime && dateFormat.format(new Date(entity.endTime))) || "-" }}</td>
           <td>{{ (entity.endTime && difFormat.format(new Date(entity.endTime - entity.startTime))) || '-' }}</td>
-          <td><template v-if="!groupBy"><RouterLink :to="{ name: 'Entity', params: { id: entity.id } }"><PencilIcon class="h-4 w-4" /></RouterLink></template></td>
+          <td>
+            <RouterLink v-if="!groupBy" :to="{ name: 'Entity', params: { id: entity.id } }" title="Update task entry">
+              <PencilIcon class="h-4 w-4" />
+            </RouterLink>
+          </td>
         </tr>
       </tbody>
     </table>

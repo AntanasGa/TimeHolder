@@ -5,7 +5,7 @@
       <div class="flex gap-2 justify-between">
         <h1 class="font-bold text-2xl mb-2">{{ id < 0 ? "New entity" : `Edit entity ${entity.taskId.value}` }}</h1>
         <Transition name="slide-in-right">
-          <StyledButton v-if="id > -1" @click="() => selectedMenu = ModalConfirm.Delete">
+          <StyledButton v-if="id > -1" @click="() => selectedMenu = ModalConfirm.Delete" title="Remove entry">
             <TrashIcon class="w-6 h-6" title="delete entry" />
           </StyledButton>
         </Transition>
@@ -14,10 +14,12 @@
         <div class="flex gap-2 flex-row max-w-[inherit]">
           <SearchableSelect name="EntryTaskIndex"
             title="Entry Task"
+            default-value="No task selected"
             :selection="cache.task?.map(x => x.taskName)"
             :modelValue="cache.task?.findIndex((x) => x.id === entity.taskId.value) ?? -1"
             @update:modelValue="(v) => entity.taskId.value = cache.task?.[v ?? -1]?.id ?? -1"
             class="grow shring basis-0 min-w-0"
+            keepUp
           />
           <Transition name="slide-in-right">
             <RouterLink v-if="entity.taskId.value > -1"
