@@ -6,9 +6,9 @@ import { Component, defineAsyncComponent } from 'vue';
 import LoaderBlank from '@/components/LoaderBlank.vue';
 
 const loadComponent = async <T extends Component>(fn: () => Promise<T>) => 
-await defineAsyncComponent({
-  loader: () => fn(),
-  loadingComponent: LoaderBlank
+  defineAsyncComponent({
+    loader: () => fn(),
+    loadingComponent: LoaderBlank
 })
 
 // lazyloading
