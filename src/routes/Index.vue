@@ -14,7 +14,10 @@
         <h2 class="font-bold text-3xl whitespace-nowrap overflow-hidden text-ellipsis">{{ item.taskName }}</h2>
         <a :href="item.taskLink" class="flex gap-1">To task <LinkIcon class="w-3 h-3" /></a>
       </div>
-      <RouterLink :to="{ name: 'Task', params: { id: item.id } }" class="rounded-full bg-black dark:bg-stone-700 w-16 h-16 mr-2 group-hover:mr-0 group-hover:bg-stone-800 transition-all shrink-0">
+      <RouterLink :to="{ name: 'Task', params: { id: item.id } }"
+        class="rounded-full bg-black dark:bg-stone-700 w-16 h-16 mr-2 group-hover:mr-0 group-hover:bg-stone-800 transition-all shrink-0"
+        title="Edit task"
+        >
         <ArrowRightIcon class="w-full h-full text-white dark:text-black group-hover:text-red-500 transition-all" />
       </RouterLink>
     </div>

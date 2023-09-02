@@ -7,16 +7,17 @@
           <StyledInput v-model="task.taskName.value" :name="'taskName'" :title="'Task name'" className="text-ellipsis" />
           <div class="flex gap-2 items-center">
             <StyledInput v-model="task.taskLink.value" :name="'taskLink'" :title="'Task link'" class="grow w-full" className="text-ellipsis" />
-            <a :class="[
-              'p-2 transition-all shrink',
-              id === -1
-                ? 'absolute w-0 opacity-0 pointer-events-none'
-                : 'static w-9 opacity-100',
-              ]"
-              :href="id > -1 ? task.taskLink.value : ''"
-              rel="noopener noreferrer"
-              target="_blank"
-            ><LinkIcon class="w-5 h-5" /></a>
+            <Transition name="slide-in-right">
+              <a v-if="id !== -1"
+                class="p-2 shrink"
+                :href="id > -1 ? task.taskLink.value : ''"
+                rel="noopener noreferrer"
+                target="_blank"
+                title="Task registration link (external)"
+              >
+                <LinkIcon class="w-5 h-5" />
+              </a>
+            </Transition>
           </div>
           <div class="flex gap-2">
             <StyledButton :class="[
@@ -40,8 +41,8 @@
           </div>
         </div>
         <div v-if="id > -1" class="flex justify-between">
-          <RouterLink class="flex gap-1" :to="{name: 'Entities', query: { taskId: id }}">Entries <LinkIcon class="w-3 h-3" /></RouterLink>
-          <RouterLink class="flex gap-1" :to="{name: 'NewEntity', query: { taskId: id } }">Register Time <LinkIcon class="w-3 h-3" /></RouterLink>
+          <RouterLink class="flex gap-1" :to="{name: 'Entities', query: { taskId: id }}" title="View entries with filtered task">Entries <LinkIcon class="w-3 h-3" /></RouterLink>
+          <RouterLink class="flex gap-1" :to="{name: 'NewEntity', query: { taskId: id } }" title="Create entry for task">Register Time <LinkIcon class="w-3 h-3" /></RouterLink>
         </div>
       </div>
       <Modal v-if="selectedMenu !== ModalConfirm.None" :onCancel="(() => (selectedMenu = ModalConfirm.None))">
@@ -146,3 +147,15 @@ if (id.value < 0) {
 }
 
 </script>
+<style>
+.slide-in-right-leave-active,
+.slide-in-right-enter-active {
+  transition: all 0.10s ease-in;
+}
+
+.slide-in-right-leave-to,
+.slide-in-right-enter-from {
+  opacity: 0;
+  transform: translateX(2em);
+}
+</style>
