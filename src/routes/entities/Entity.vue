@@ -176,7 +176,6 @@ if (id.value < 0) {
     confirmProceed();
   } else {
     initializeForm(tmpTask);
-
   }
 }
 </script>
