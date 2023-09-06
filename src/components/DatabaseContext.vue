@@ -1,5 +1,11 @@
 <template>
   <slot :busy="db.busy || toasts.loading" :accessable="!db.denyAccess"></slot>
+  <Modal
+    v-if="crashDetected"
+    :onCancel="() => {}"
+  >
+    <DataRecovery />
+  </Modal>
 </template>
 
 <script setup lang="ts">
@@ -7,11 +13,14 @@ import { useIndexedDbStore } from '@/stores/IndexedDbStore';
 import { useMessagingStore, IToast, ToastStatus } from '@/stores/MessagingStore';
 import { useDBCacheStore } from '@/stores/DBCacheStore';
 import { IEntity, ITask, IndexType, IndexedItem } from '@/stores/documents';
-import { provide } from 'vue';
+import { provide, ref } from 'vue';
+import Modal from './Modal.vue';
+import DataRecovery from './Error/DataRecovery.vue';
 
 const items = useDBCacheStore();
 const toasts = useMessagingStore();
 const db = useIndexedDbStore();
+const crashDetected = ref(false);
 
 const taskUnloadedError: Partial<IToast> = { title: "Task", message: "tasks are not loaded", status: ToastStatus.Error };
 const taskMissingError: Partial<IToast> = { title: "Task", message: "Could not find index", status: ToastStatus.Error };
@@ -22,9 +31,12 @@ const task = {
         items.task = [...(items.task ?? []), res];
         toasts.addToast({title: "Task", message: "Task added"});
         resolve(res);
-      }).catch((e: IDBRequest | Error) => {
+      }).catch((e: IDBRequest | Error | DOMException) => {
         let message = e instanceof Error ? e.message : (e.error?.message || "");
         toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+        if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+          crashDetected.value = true;
+        }
         reject(e);
       });
     });
@@ -52,9 +64,12 @@ const task = {
         items.task = newTasks;
         toasts.addToast({title: "Task", message: "Task updated"});
         resolve(payload);
-      }).catch((e: IDBRequest | Error) => {
+      }).catch((e: IDBRequest | Error | DOMException) => {
         let message = e instanceof Error ? e.message : (e.error?.message || "");
         toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+        if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+          crashDetected.value = true;
+        }
         reject(e);
       });
     });
@@ -78,10 +93,13 @@ const task = {
       }
       
       items.task.splice(index, 1);
-    }).catch((e: IDBRequest | Error) => {
+      }).catch((e: IDBRequest | Error | DOMException) => {
       let message = e instanceof Error ? e.message : (e.error?.message || "");
 
       toasts.addToast({title: "Task", message, status: ToastStatus.Error});
+      if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+        crashDetected.value = true;
+      }
     });
   },
 };
@@ -95,9 +113,12 @@ const entity = {
         items.entity = [...(items.entity ?? []), res];
         toasts.addToast({title: "Time entry", message: "Time entry added"});
         resolve(res);
-      }).catch((e: IDBRequest | Error) => {
+      }).catch((e: IDBRequest | Error | DOMException) => {
         let message = e instanceof Error ? e.message : (e.error?.message || "");
         toasts.addToast({title: "Time entry", message, status: ToastStatus.Error});
+        if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+          crashDetected.value = true;
+        }
         reject(e);
       });
     })
@@ -125,9 +146,12 @@ const entity = {
         items.entity = newEntries;
         toasts.addToast({title: "Time entry", message: "Time entry updated"});
         resolve(payload);
-      }).catch((e: IDBRequest | Error) => {
+      }).catch((e: IDBRequest | Error | DOMException) => {
         let message = e instanceof Error ? e.message : (e.error?.message || "");
         toasts.addToast({title: "Time entry", message, status: ToastStatus.Error});
+        if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+          crashDetected.value = true;
+        }
         reject(e);
       });
     });
@@ -151,10 +175,12 @@ const entity = {
       }
       
       items.entity.splice(index, 1);
-    }).catch((e: IDBRequest | Error) => {
+    }).catch((e: IDBRequest | Error | DOMException) => {
       let message = e instanceof Error ? e.message : (e.error?.message || "");
-
       toasts.addToast({title: "Time entry", message, status: ToastStatus.Error});
+      if (e instanceof IDBRequest || e instanceof Event || e instanceof DOMException) {
+        crashDetected.value = true;
+      }
     });
   },
 };
