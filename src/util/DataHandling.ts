@@ -16,7 +16,7 @@ export async function createFile(data: Blob, fileName?: string) {
 
 export async function createCacheBlob(data: CacheTypes): Promise<Blob> {
   return new Promise((resolve) => {
-    resolve(new Blob([JSON.stringify(data)], { type: 'text/plain' }));
+    resolve(new Blob([JSON.stringify(data)], { type: 'application/json' }));
   });
 }
 
