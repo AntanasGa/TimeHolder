@@ -24,7 +24,7 @@
     <div class="rounded-md drop-shadow-md backdrop-blur-sm w-full flex flex-col gap-2 p-2 items-center group transition-all">
       <h2 class="font-bold text-3xl">Export</h2>
       <div class="mt-auto">
-        <StyledButton title="Export data to local file" class="bg-zinc-100 dark:bg-stone-800 hover:bg-zinc-200 dark:hover:bg-stone-700" @click="() => exportData()">
+        <StyledButton title="Export data to local file" class="bg-zinc-100 dark:bg-stone-800 hover:bg-zinc-200 dark:hover:bg-stone-700" @click="exportData">
           <ArrowDownTrayIcon class="w-16 h-16" />
         </StyledButton>
       </div>
@@ -42,6 +42,7 @@ import { inject, ref } from 'vue';
 import { CacheTypes } from '@/stores/documents';
 import { DBContext } from '@/components/DatabaseContext.vue';
 import { ToastStatus, useMessagingStore } from '@/stores/MessagingStore';
+import { createCacheBlob, createFile } from '@/util/DataHandling';
 
 const cache = useDBCacheStore();
 const db = useIndexedDbStore();
@@ -52,16 +53,12 @@ const entityActions = inject<DBContext["entity"]>("entity");
 
 const overwrite = ref(false);
 
-function exportData() {
-  const prevBusy = !!db.busy;
-  db.busy = true;
-  const fileData = new Blob([JSON.stringify({ entity: cache.entity, task: cache.task })], { type: 'text/plain' });
-
-  const downloadEl = document.createElement('a');
-  downloadEl.download = `task-export-${new Date().valueOf()}.json`;
-  downloadEl.href = URL.createObjectURL(fileData);
-  downloadEl.click();
-  requestAnimationFrame(() => (downloadEl.remove(), db.busy = prevBusy));
+async function exportData() {
+  toasts.loading = true;
+  createFile(await createCacheBlob({ entity: cache.entity, task: cache.task }),
+    `task-export-${new Date().valueOf()}.json`
+  )
+  .finally(() => toasts.loading = false);
 }
 
 const uploadEl = ref<HTMLInputElement | undefined>();
