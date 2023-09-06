@@ -13,6 +13,12 @@ export const useDBCacheStore = defineStore('DBCacheStore', {
     entitesWithTasks: (state) => {
       const mappedTasks = Object.fromEntries(state.task?.map((x) => [x.id, x]) ?? []);
       return state.entity?.map((x) => ({...x, task: mappedTasks[x.taskId]}));
+    },
+    entireCache: (state): CacheTypes => {
+      return {
+        entity: state.entity,
+        task: state.task,
+      };
     }
   },
 });

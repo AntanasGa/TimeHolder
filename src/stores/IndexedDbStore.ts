@@ -33,8 +33,15 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         }
 
         const [ resolve, reject ] = usePromiseTransaction(this, res, rej);
-        
-        const interaction: IDBRequest<R[]> = this.db.transaction(table, "readonly").objectStore(table).getAll();
+
+        let conversation: IDBTransaction;
+        try {
+          conversation = this.db.transaction(table, "readonly");
+        } catch (e) {
+          return reject(e);
+        }
+
+        const interaction: IDBRequest<R[]> = conversation.objectStore(table).getAll();
         
         interaction.onerror = (ev) => {
           reject(ev);
@@ -58,7 +65,14 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         
         const [ resolve, reject ] = usePromiseTransaction(this, res, rej);
 
-        const interaction = this.db.transaction(table, "readwrite").objectStore(table).put(payload);
+        let conversation: IDBTransaction;
+        try {
+          conversation = this.db.transaction(table, "readwrite");
+        } catch (e) {
+          return reject(e);
+        }
+
+        const interaction = conversation.objectStore(table).add(payload);
 
         interaction.onerror = (ev) => {
           reject(ev)
@@ -81,7 +95,18 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
         }
         const [ resolve, reject ] = usePromiseTransaction(this, res, rej);
 
-        const interaction = this.db.transaction(table, "readwrite").objectStore(table).add(payload);
+        let conversation: IDBTransaction;
+        try {
+          conversation = this.db.transaction(table, "readwrite");
+        } catch (e) {
+          return reject(e);
+        }
+
+        const interaction = conversation.objectStore(table).add(payload);
+
+        if (!this.db) {
+          reject(new Error("Database variable missing"));
+        }
 
         interaction.onerror = (ev) => {
           reject(ev);
