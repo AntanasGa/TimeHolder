@@ -55,7 +55,7 @@ const overwrite = ref(false);
 
 async function exportData() {
   toasts.loading = true;
-  createFile(await createCacheBlob({ entity: cache.entity, task: cache.task }),
+  createFile(await createCacheBlob(cache.entireCache),
     `task-export-${new Date().valueOf()}.json`
   )
   .finally(() => toasts.loading = false);
