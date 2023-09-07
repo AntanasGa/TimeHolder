@@ -72,7 +72,7 @@ export const useIndexedDbStore = defineStore('indexedDbStore', {
           return reject(e);
         }
 
-        const interaction = conversation.objectStore(table).add(payload);
+        const interaction = conversation.objectStore(table).put(payload);
 
         interaction.onerror = (ev) => {
           reject(ev)
