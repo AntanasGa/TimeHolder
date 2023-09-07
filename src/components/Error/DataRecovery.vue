@@ -20,19 +20,19 @@
     >
       Start an export
     </StyledButton>
-    <Modal v-if="selectedMenu !== ModalConfirm.None" :onCancel="() => selectedMenu = ModalConfirm.None">
-      <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-8 max-w-[18rem]">
-        <h1 class="font-bold text-xl mb-2">Are you sure you want to leave without exporting?</h1>
-        <h2 class="font-medium text-md mb-2">Proceeding may include loss of data</h2>
-        <StyledButton class="col flex-1 text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700"
-            @click="() => selectedMenu = ModalConfirm.None"
-          >No</StyledButton>
-          <StyledButton class="col flex-1 text-white bg-red-400 hover:bg-red-500 active:bg-red-600 dark:bg-red-800 dark:hover:bg-red-600 dark:active:bg-red-700"
-            @click="OnProceed"
-          >Yes</StyledButton>
-      </div>
-    </Modal>
   </div>
+  <Modal v-if="selectedMenu !== ModalConfirm.None" :onCancel="() => selectedMenu = ModalConfirm.None">
+    <div class="relative flex flex-col rounded-md drop-shadow-md backdrop-blur-sm bg-white dark:bg-stone-800 p-2 gap-8 max-w-[18rem]">
+      <h1 class="font-bold text-xl mb-2">Are you sure you want to leave without exporting?</h1>
+      <h2 class="font-medium text-md mb-2">Proceeding may include loss of data</h2>
+      <StyledButton class="col flex-1 text-white dark:text-black bg-zinc-900 dark:bg-stone-100 hover:bg-zinc-800 dark:hover:bg-stone-300 dark:active:bg-stone-200 active:bg-zinc-700"
+          @click="() => selectedMenu = ModalConfirm.None"
+        >No</StyledButton>
+        <StyledButton class="col flex-1 text-white bg-red-400 hover:bg-red-500 active:bg-red-600 dark:bg-red-800 dark:hover:bg-red-600 dark:active:bg-red-700"
+          @click="OnProceed"
+        >Yes</StyledButton>
+    </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
