@@ -24,6 +24,12 @@ export default defineConfig({
           if (id.includes('src/components/Icons')) {
             return 'icons';
           }
+          if (id.includes('src/routes/Index.vue') || id.includes('src/routes/Task.vue')) {
+            return 'pg-task';
+          }
+          if (id.includes('src/routes/entities/')) {
+            return 'pg-entities';
+          }
         }
       }
     }
